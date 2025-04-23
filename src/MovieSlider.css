@@ -1,0 +1,55 @@
+.movie-slide {
+    height: 90vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem;
+    color: white;
+}
+
+.movie-content {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 700px;
+}
+
+.genre-tag {
+    background: white;
+    color: black;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+    display: inline-block;
+}
+
+.movie-info span {
+    margin-right: 1rem;
+    font-size: 0.9rem;
+}
+
+.buttons {
+    margin-top: 1rem;
+}
+
+.watch-now {
+    background: red;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.watch-later {
+    background: transparent;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: 2px solid white;
+    border-radius: 8px;
+    font-weight: bold;
+}
