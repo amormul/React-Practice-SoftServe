@@ -26,7 +26,12 @@ const TypeSearch: FunctionComponent = () => {
                     variant="outlined"
                     value={inputValue}
                     onChange={handleChange}
-                    sx={{ margin: 0, width: 300 }}
+                    sx={{
+                        margin: 0,
+                        width: 300,
+                        backgroundColor: "#fff",
+                        borderRadius: '25px'
+                    }}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
