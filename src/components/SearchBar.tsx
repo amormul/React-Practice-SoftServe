@@ -30,7 +30,15 @@ const TypeSearch: FunctionComponent = () => {
                         margin: 0,
                         width: 300,
                         backgroundColor: "#fff",
-                        borderRadius: '25px'
+                        borderRadius: '25px',
+                        '&.Mui-focused fieldset': {
+                            borderColor: "none",
+                            borderRadius: '25px',
+                        }, '& fieldset': {
+                            borderColor: 'none',
+                            borderRadius: '25px',
+                        },
+
                     }}
                     InputProps={{
                         startAdornment: (
@@ -42,7 +50,9 @@ const TypeSearch: FunctionComponent = () => {
                             <InputAdornment
                                 position="end"
                                 onClick={handleClear}
-                                sx={{ cursor: 'pointer' }}
+                                sx={{
+                                    cursor: 'pointer'
+                                }}
                             >
                                 <ClearIcon />
                             </InputAdornment>

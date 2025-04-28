@@ -1,7 +1,6 @@
 // import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { red } from '@mui/material/colors';
 export default function TextFields() {
   return (
     <Box
@@ -22,18 +21,17 @@ export default function TextFields() {
             '& .MuiOutlinedInput-root': {
               backgroundColor: '#fff',
               borderRadius: '10px',
-              transition: '0.5s',
               color: '#000',
               '& fieldset': {
-                borderColor: red[100],
+                borderColor: "none",
                 color: '#fff',
               },
               '&:hover fieldset': {
-                borderColor: red[500],
+                borderColor: "none",
                 color: '#fff',
               },
               '&.Mui-focused fieldset': {
-                borderColor: red[700],
+                borderColor: "none",
                 color: '#fff',
               },
             },
