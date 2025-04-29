@@ -38,7 +38,6 @@ const TypeSearch: FunctionComponent = () => {
                             borderColor: 'none',
                             borderRadius: '25px',
                         },
-
                     }}
                     InputProps={{
                         startAdornment: (
