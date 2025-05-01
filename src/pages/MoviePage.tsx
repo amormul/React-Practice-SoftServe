@@ -1,4 +1,11 @@
-function ProfilePage() {
+import React from 'react';
 
-}
-export default ProfilePage;
+const MoviePage = () => {
+    return (
+        <div>
+            <h1>Main Page</h1>
+        </div>
+    );
+};
+
+export default MoviePage;
