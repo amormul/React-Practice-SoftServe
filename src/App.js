@@ -3,11 +3,12 @@ import MovieSlider from './components/MovieSlider';
 import Header from './components/Header';
 
 function App() {
-  return (
-      <div className="App">
-        <MovieSlider />
-      </div>
-  );
+    return (
+        <>
+            <Header />
+             <MovieSlider />
+        </>
+    );
 }
 
 export default App;
