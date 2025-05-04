@@ -1,36 +1,47 @@
-import { useState } from 'react'
-import { Button } from '@mui/material'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import NotFoundPage from './pages/NotFound.tsx';
+import MainPage from "./pages/MainPage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx"
+import MoviePage from "./pages/MoviePage.tsx"
+import MovieProvider from "./context/MovieProvider.tsx"
 import './App.css'
+import {
+  createBrowserRouter,
+  RouterProvider
+} from 'react-router-dom';
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainPage />,
+    errorElement: <NotFoundPage />
+
+  },
+  {
+    path: "/profile/:userId",
+    element: <ProfilePage />,
+    errorElement: <NotFoundPage />
+  },
+  {
+    path: "/movie/:movieId",
+    element: <MoviePage />,
+    errorElement: <NotFoundPage />
+  }
+]);
+
+
+//  Основне тіло Застосунку
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="AppDiv">
+        <MovieProvider>
+          <RouterProvider router={router} />
+        </MovieProvider>
       </div>
-      <h1>Vite + React + MUI</h1>
-      <div className="card">
-        <Button onClick={() => setCount((count) => count + 1)} variant="contained" color="primary">
-          count is {count}
-        </Button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
+
 
 export default App
