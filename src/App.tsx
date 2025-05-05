@@ -1,20 +1,49 @@
-import './App.css'
-import AvatarUploader from './components/AvatarUploader'
 
+import NotFoundPage from './pages/NotFound.tsx';
+import MainPage from "./pages/MainPage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx"
+import MoviePage from "./pages/MoviePage.tsx"
+import MovieProvider from "./context/MovieProvider.tsx"
+import './App.css'
+import {
+  createBrowserRouter,
+  RouterProvider
+} from 'react-router-dom';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainPage />,
+    errorElement: <NotFoundPage />
+
+  },
+  {
+    path: "/profile/:userId",
+    element: <ProfilePage />,
+    errorElement: <NotFoundPage />
+  },
+  {
+    path: "/movie/:movieId",
+    element: <MoviePage />,
+    errorElement: <NotFoundPage />
+  }
+]);
+
+
+//  Основне тіло Застосунку
 function App() {
-  const handleImageConfirm = (file: File) => {
-        // do something with the confirmed file
-        console.log('Confirmed image:', file);
-  };
+
 
   return (
     <>
-      <p className="read-the-docs">
-          <AvatarUploader onConfirm={handleImageConfirm}/>
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="AppDiv">
+        <MovieProvider>
+          <RouterProvider router={router} />
+        </MovieProvider>
+      </div>
     </>
   )
 }
+
 
 export default App
