@@ -20,7 +20,7 @@ export default function UserProfile() {
         height: '100vh',
         backgroundColor: '#000',
         display: 'flex',
-        alignItems: 'self-start',
+        alignItems: 'flex-start',
         justifyContent: 'center',
         padding: 0
       }}
