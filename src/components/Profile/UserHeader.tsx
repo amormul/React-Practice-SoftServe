@@ -18,7 +18,7 @@ function UserHeader({avatarUrl, dateJoined, username, bio}: UserHeaderProps) {
       container
       width={{ xs: '90%', sm: '90%', md: '850px', lg: '1000px', xl: '1200px' }}
       direction={{ sm: 'column', md: 'row' }}
-      alignItems={{ sm: 'flex-start', md: 'self-start' }}
+      alignItems={{ sm: 'flex-start', md: 'flex-start' }}
       justifyContent={{ md: 'space-between'}}
       paddingTop={5}
     >
