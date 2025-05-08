@@ -1,3 +1,8 @@
+
+import React from 'react';
+import ActorSlider from './components/ActorSlider';
+import { actors } from './data/actors';
+
 import NotFoundPage from './pages/NotFound.tsx';
 import MainPage from "./pages/MainPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx"
@@ -8,6 +13,7 @@ import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom';
+
 
 const router = createBrowserRouter([
   {
@@ -33,6 +39,21 @@ const router = createBrowserRouter([
 function App() {
 
   return (
+    <div className="min-h-screen bg-gray-900 text-white">
+      <div className="container mx-auto py-8">
+        <ActorSlider 
+          actors={actors} 
+          title="Знімальна група та акторський склад" 
+        />
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+  return (
     <>
       <div className="AppDiv">
         <MovieProvider>
@@ -45,3 +66,4 @@ function App() {
 
 
 export default App
+
