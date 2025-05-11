@@ -8,6 +8,7 @@ import {Box, ButtonBase, IconButton} from "@mui/material";
     'a' - доступне звичайне місце
     'b' - доступне vip місце
 */
+
 type SeatType = "-" | "x" | "a" | "b";
 
 // Клас для зберігання інформації про місце
@@ -36,25 +37,30 @@ const seatMapString =
     "aaaaaaaaaaaaaa\n" +
     "-aaaaaaaaaaaa-\n" +
     "-aaaaaaaaaaaa-\n" +
-    "-aaaaaaaaaaaa-"
+    "-aaaaaaaaaaaa-";
 
 // Парсер, що повертає масив масивів об'єктів Seat
-const parseSeatMap = (mapStr: string): Seat[][] =>
-    mapStr.split("\n").map((line, rowIndex) => {
+// Тепер row логічно нумерується знизу вгору
+const parseSeatMap = (mapStr: string): Seat[][] => {
+    const lines = mapStr.split("\n");
+    return lines.map((line, rowIndex) => {
         const row: Seat[] = [];
         let logicalCol = 0;
+        // інвертуємо номер ряду
+        const logicalRow = lines.length - 1 - rowIndex;
 
         line.trim().split("").forEach((char) => {
             if (char === "-") {
-                row.push(new Seat(rowIndex, -1, char as SeatType)); // -1, бо це візуальне місце
+                row.push(new Seat(logicalRow, -1, char as SeatType));
             } else {
-                row.push(new Seat(rowIndex, logicalCol, char as SeatType));
+                row.push(new Seat(logicalRow, logicalCol, char as SeatType));
                 logicalCol++;
             }
         });
 
         return row;
     });
+};
 
 // Статична карта, щоб екземпляри Seat були незмінні між рендерами
 const seatMap: Seat[][] = parseSeatMap(seatMapString);
@@ -94,9 +100,9 @@ const CinemaSeatSelector: React.FC = () => {
         <Box display="flex" flexDirection="row" alignItems="start" gap={2}>
             {/* Лівий стовпчик з номерами рядів */}
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="flex-end" gap={1}>
-                {seatMap.map((_, rowIndex) => (
+                {seatMap.map((row) => (
                     <Box
-                        key={`label-${rowIndex}`}
+                        key={`label-${row[0].row}`}
                         sx={{
                             width: 30,
                             height: 40,
@@ -105,12 +111,11 @@ const CinemaSeatSelector: React.FC = () => {
                             justifyContent: "flex-end",
                             fontSize: "14px",
                             fontWeight: "bold",
-                            lineHeight: "40px", // додає точне вертикальне центрування тексту
+                            lineHeight: "40px",
                         }}
                     >
-                        {rowIndex + 1}
+                        {row[0].row + 1}
                     </Box>
-
                 ))}
             </Box>
 
@@ -154,6 +159,7 @@ const CinemaSeatSelector: React.FC = () => {
                     </Box>
                 ))}
             </Box>
+
             {/* Панель вибраних місць */}
             <Box
                 minWidth={180}
@@ -181,9 +187,9 @@ const CinemaSeatSelector: React.FC = () => {
                                     justifyContent="space-between"
                                     alignItems="center"
                                 >
-            <span>
-                Ряд: {seat.row + 1}, Номер: {seat.col + 1}, {price} грн
-            </span>
+                                    <span>
+                                        Ряд: {seat.row + 1}, Номер: {seat.col + 1}, {price} грн
+                                    </span>
                                     <IconButton
                                         size="small"
                                         onClick={() => handleSeatClick(seat)}
@@ -198,22 +204,18 @@ const CinemaSeatSelector: React.FC = () => {
                                 </Box>
                             );
                         })
-
                     )}
                 </Box>
 
                 <Box fontWeight="bold" borderTop="1px solid #555" pt={1}>
-                    Сума:{" "}
-                    {selectedSeats.reduce((sum, seat) => {
-                        const price = seat.type === "a" ? 100 : 150;
-                        return sum + price;
-                    }, 0)}{" "}
-                    грн
+                    Сума: {selectedSeats.reduce((sum, seat) => {
+                    const price = seat.type === "a" ? 100 : 150;
+                    return sum + price;
+                }, 0)} грн
                 </Box>
             </Box>
         </Box>
     );
-
 };
 
 export default CinemaSeatSelector;
