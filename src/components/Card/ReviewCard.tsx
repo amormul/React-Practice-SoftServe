@@ -1,4 +1,5 @@
-import {Avatar, Card, CardContent, CardHeader, Link, Stack, Typography} from "@mui/material";
+import {useState} from "react";
+import {Avatar, Card, CardContent, CardHeader, Link, Stack, Typography, Button, CardActions} from "@mui/material";
 import {StarOutlined} from "@mui/icons-material";
 
 interface ReviewCardProps {
@@ -7,12 +8,19 @@ interface ReviewCardProps {
   imageSrc: string;
   review: string;
   userRating: number;
+  filmRating: number;
   reviewDate: string;
 }
 
-function ReviewCard({id, title, imageSrc, review, userRating, reviewDate}: ReviewCardProps) {
+function ReviewCard({id, title, imageSrc, review, userRating, filmRating, reviewDate}: ReviewCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const maxReviewLength = 500;
   const truncatedReview = review.length > maxReviewLength ? review.slice(0, maxReviewLength) + "..." : review;
+
+  const handleToggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <Card
@@ -31,7 +39,12 @@ function ReviewCard({id, title, imageSrc, review, userRating, reviewDate}: Revie
           <Avatar variant="rounded" src={imageSrc} sx={{width: 52, height: 76}}/>
         }
         title={
-          <Link href={`/film/${id}`} underline="hover" color="inherit">
+          <Link
+            href={`/film/${id}`}
+            underline="hover"
+            color="inherit"
+            display="inline-flex"
+          >
             <Typography
               variant="h6"
               component="div"
@@ -41,9 +54,14 @@ function ReviewCard({id, title, imageSrc, review, userRating, reviewDate}: Revie
             </Typography>
           </Link>
         }
-        subheader={"Somet"}
+        subheader={
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <StarOutlined fontSize="small" color="warning"/>
+            <Typography variant="subtitle2" paddingRight={1}>{filmRating}</Typography>
+          </Stack>
+        }
       />
-      <CardContent sx={{paddingTop: 1}}>
+      <CardContent sx={{paddingBottom: 0}}>
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <StarOutlined fontSize="small" color="success"/>
           <Typography variant="subtitle2" paddingRight={1}>{userRating}</Typography>
@@ -53,9 +71,20 @@ function ReviewCard({id, title, imageSrc, review, userRating, reviewDate}: Revie
           variant="body2"
           sx={{mt: 1, textAlign: "left"}}
         >
-          {truncatedReview}
+          {isExpanded ? review : truncatedReview}
         </Typography>
       </CardContent>
+      <CardActions>
+        {review.length > maxReviewLength && (
+          <Button
+            size="small"
+            onClick={handleToggleExpand}
+            sx={{mt: 1, width: "100%"}}
+          >
+            {isExpanded ? "Show Less" : "Show All"}
+          </Button>
+        )}
+      </CardActions>
     </Card>
   );
 }

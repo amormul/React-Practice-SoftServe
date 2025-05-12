@@ -1,7 +1,6 @@
 import {Avatar, Button, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import ProfileStatCard from "./ProfileStatCard.tsx";
 import UserBio from "./UserBio.tsx";
-import {useNavigate} from "react-router-dom";
 import {DateRangeOutlined} from "@mui/icons-material";
 
 interface UserHeaderProps {
@@ -19,20 +18,18 @@ interface UserHeaderProps {
 
 function UserHeader({avatarUrl, username, dateJoined, bio, isOwner, statistics}: UserHeaderProps) {
   const theme = useTheme();
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleEditClick = () => {
-    navigate('/settings');
+    // navigate('/settings');
   };
 
   return (
     <Grid
       container
-      width={{xs: '90%', sm: '90%', md: '100%'}}
       direction={{sm: 'column', md: 'row'}}
-      alignItems={{md: 'flex-start'}}
-      justifyContent={{md: 'space-evenly'}}
+      justifyContent="space-between"
       gap={{md: 10}}
     >
       {/* User */}
@@ -63,10 +60,10 @@ function UserHeader({avatarUrl, username, dateJoined, bio, isOwner, statistics}:
               {username}
             </Typography>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <DateRangeOutlined />
+              <DateRangeOutlined fontSize="small"/>
               <Typography
-                variant="caption"
-                fontSize={{xs: '0.6rem', sm: '0.7rem', md: '0.8rem', lg: '1rem'}}
+                variant="subtitle1"
+                fontSize={{xs: '0.7rem', sm: '0.75rem', md: '0.8rem', lg: '0.95rem'}}
               >
                 {dateJoined}
               </Typography>

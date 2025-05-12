@@ -30,7 +30,7 @@ function MediaCard({...props}: MediaCardProps) {
     <Card
       sx={{
         maxWidth: "200px",
-        height: "auto",
+        maxHeight: "375px",
         borderRadius: "5px",
         transition: "transform 0.3s",
         cursor: "pointer",
@@ -47,9 +47,9 @@ function MediaCard({...props}: MediaCardProps) {
       />
       <CardContent>
         {rating && (
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" alignItems="center" spacing={0.5}>
             <StarOutlined fontSize="small" color="warning"/>
-            <Typography variant="subtitle2">{rating}</Typography>
+            <Typography variant="body2">{rating}</Typography>
           </Stack>
         )}
         <Typography
