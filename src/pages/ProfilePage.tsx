@@ -1,36 +1,47 @@
+import {Stack} from "@mui/material";
+import CardSlider from "../components/Card/CardSlider.tsx";
+import MediaCard from "../components/Card/MediaCard.tsx";
+import ReviewCard from "../components/Card/ReviewCard.tsx";
+import TitleSection from "../components/Common/TitleSection.tsx";
+import profileDataJson from "../data/profileData.json";
+import {useEffect, useState} from "react";
 import UserHeader from "../components/Profile/UserHeader.tsx";
-import {Container} from "@mui/material";
-import reactUrl from "../assets/react.svg";
 
-const user = {
-  username: "cinemalover",
-  dateJoined: "Joined July 2024",
-  avatarUrl: reactUrl,
-  bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  isOwner: true,
-  statistics: {
-    ratings: 10,
-    watchlist: 164,
-    reviews: 5
-  }
-};
 
 const ProfilePage = () => {
-    return (
-      <Container
-        maxWidth={false}
-        disableGutters
-        sx={{
-          // backgroundColor: '#000',
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          padding: 0
-        }}
-    >
-      <UserHeader {...user} />
-    </Container>
-    );
+  const [profileData, setProfileData] = useState<any>(null)
+
+  useEffect(() => {
+    setProfileData(profileDataJson);
+  }, []);
+
+  if (!profileData) {
+    return <div>Loading...</div>
+  }
+
+  const { user, ratings, watchlist, reviews } = profileData;
+  const statistics = {
+    ratings: ratings.length,
+    watchlist: watchlist.length,
+    reviews: reviews.length,
+  };
+
+  return (
+    <Stack spacing={5}>
+      <UserHeader {...user} statistics={statistics} />
+      <TitleSection title="Ratings" description="My Ratings">
+        <CardSlider items={ratings} CardComponent={MediaCard} />
+      </TitleSection>
+      <TitleSection title="Watchlist" description="My Watchlist">
+        <CardSlider items={watchlist} CardComponent={MediaCard} />
+      </TitleSection>
+      <TitleSection title="Reviews" description="My Reviews">
+        {reviews.map((review, index) => (
+          <ReviewCard key={index} {...review} />
+        ))}
+      </TitleSection>
+    </Stack>
+  );
 };
 
 export default ProfilePage;
