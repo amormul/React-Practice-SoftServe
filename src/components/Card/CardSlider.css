@@ -1,0 +1,32 @@
+.slick-slide {
+}
+
+.slick-track {
+    margin-left: 0;
+}
+
+.slick-list {
+    padding: 1rem 2px;
+}
+
+.slick-next {
+    width: auto;
+    height: auto;
+    right: 15px;
+}
+
+.slick-next:before {
+    font-size: 50px;
+}
+
+.slick-prev {
+    z-index: 1;
+    display: block;
+    left: 10px;
+    width: auto;
+    height: auto;
+}
+
+.slick-prev:before {
+    font-size: 50px;
+}
