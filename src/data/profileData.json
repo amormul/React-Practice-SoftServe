@@ -24,6 +24,42 @@
       "title": "Tenet",
       "imageSrc": "/src/assets/movies/tenet.jpg",
       "rating": 4
+    },
+    {
+      "id": 104,
+      "title": "Inception",
+      "imageSrc": "/src/assets/movies/inseption.jpg",
+      "rating": 7
+    },
+    {
+      "id": 105,
+      "title": "The Dark Knight",
+      "imageSrc": "/src/assets/movies/thedarknight.jpg",
+      "rating": 8
+    },
+    {
+      "id": 106,
+      "title": "Tenet",
+      "imageSrc": "/src/assets/movies/tenet.jpg",
+      "rating": 4
+    },
+    {
+      "id": 107,
+      "title": "Inception",
+      "imageSrc": "/src/assets/movies/inseption.jpg",
+      "rating": 7
+    },
+    {
+      "id": 108,
+      "title": "The Dark Knight",
+      "imageSrc": "/src/assets/movies/thedarknight.jpg",
+      "rating": 8
+    },
+    {
+      "id": 109,
+      "title": "Tenet",
+      "imageSrc": "/src/assets/movies/tenet.jpg",
+      "rating": 4
     }
   ],
   "watchlist": [
