@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Avatar, Card, CardContent, CardHeader, Link, Stack, Typography, Button, CardActions} from "@mui/material";
+import {Avatar, Button, Card, CardActions, CardContent, CardHeader, Link, Stack, Typography} from "@mui/material";
 import {StarOutlined} from "@mui/icons-material";
 import {truncateText} from "../../utils.ts";
 
@@ -26,7 +26,7 @@ function ReviewCard({id, title, imageSrc, review, userRating, filmRating, review
   return (
     <Card
       sx={{
-        maxWidth: {sm: "60%", lg: "70%"},
+        maxWidth: {sm: "80%", md: "65%", lg: "50%"},
         height: "auto",
         borderRadius: "5px",
       }}

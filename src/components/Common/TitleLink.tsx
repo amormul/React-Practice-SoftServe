@@ -18,15 +18,26 @@ function TitleLink({title, description, href}: TitleSectionProps) {
           cursor: "pointer",
           borderLeft: "4px solid red",
           paddingLeft: "10px"
-      }}
+        }}
       >
         <Stack direction="row" alignItems="center">
-          <Typography variant="h4" sx={{fontWeight: "bold"}}>{title}</Typography>
-          <KeyboardArrowRight sx={{fontSize: "40px"}}/>
+          <Typography
+            variant="inherit"
+            sx={{
+              fontWeight: "bold",
+              fontSize: {xs: "1.5rem", sm: "2rem"}
+            }}
+          >
+            {title}
+          </Typography>
+          <KeyboardArrowRight
+            color="error"
+            fontSize="large"
+          />
         </Stack>
       </Link>
       {description && (
-        <Typography variant="subtitle1" color="textSecondary">{description}</Typography>
+        <Typography variant="subtitle2" color="textSecondary">{description}</Typography>
       )}
     </Stack>
   );

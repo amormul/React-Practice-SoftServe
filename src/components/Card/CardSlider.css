@@ -1,12 +1,10 @@
 .slick-slide {
+    padding: 2px 8px 1rem 1px;
+    box-sizing: border-box;
 }
 
 .slick-track {
     margin-left: 0;
-}
-
-.slick-list {
-    padding: 1rem 2px;
 }
 
 .slick-next {
