@@ -1,11 +1,11 @@
 import './App.css'
-import CinemaSeatSelector from './components/SeatPicker.tsx'
+import SeatPicker from "./components/SeatPicker/SeatPicker";
 
 function App() {
 
     return (
         <>
-            <CinemaSeatSelector/>
+            <SeatPicker/>
         </>
     )
 }
