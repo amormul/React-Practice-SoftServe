@@ -2,7 +2,7 @@
   "user": {
     "id": 4,
     "username": "TestAbobaUser",
-    "avatarUrl": "src/assets/avatars/avatar.jpg",
+    "avatarUrl": "/src/assets/avatars/avatar.jpg",
     "bio": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     "dateJoined": "2027-01-01"
   },
@@ -10,19 +10,19 @@
     {
       "id": 101,
       "title": "Inception",
-      "imageSrc": "src/assets/movies/inseption.jpg",
+      "imageSrc": "/src/assets/movies/inseption.jpg",
       "rating": 7
     },
     {
       "id": 102,
       "title": "The Dark Knight",
-      "imageSrc": "src/assets/movies/thedarknight.jpg",
+      "imageSrc": "/src/assets/movies/thedarknight.jpg",
       "rating": 8
     },
     {
       "id": 103,
       "title": "Tenet",
-      "imageSrc": "src/assets/movies/tenet.jpg",
+      "imageSrc": "/src/assets/movies/tenet.jpg",
       "rating": 4
     }
   ],
@@ -30,13 +30,13 @@
     {
       "id": 201,
       "title": "Interstellar",
-      "imageSrc": "src/assets/movies/Interstellar.jpg",
+      "imageSrc": "/src/assets/movies/Interstellar.jpg",
       "rating": 9
     },
     {
       "id": 202,
       "title": "Dune",
-      "imageSrc": "src/assets/movies/Dune_(2021_film).jpg",
+      "imageSrc": "/src/assets/movies/Dune_(2021_film).jpg",
       "rating": 7
     }
   ],
@@ -44,7 +44,7 @@
     {
       "id": 101,
       "title": "Inception",
-      "imageSrc": "src/assets/movies/inseption.jpg",
+      "imageSrc": "/src/assets/movies/inseption.jpg",
       "review": "Amazing movie with a mind-bending plot! It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
       "userRating": 5,
       "filmRating": 7,
@@ -53,7 +53,7 @@
     {
       "id": 102,
       "title": "The Dark Knight",
-      "imageSrc": "src/assets/movies/thedarknight.jpg",
+      "imageSrc": "/src/assets/movies/thedarknight.jpg",
       "review": "A masterpiece of superhero cinema.",
       "userRating": 10,
       "filmRating": 8,
