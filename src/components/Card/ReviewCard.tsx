@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {Avatar, Card, CardContent, CardHeader, Link, Stack, Typography, Button, CardActions} from "@mui/material";
 import {StarOutlined} from "@mui/icons-material";
+import {truncateText} from "../../utils.ts";
 
 interface ReviewCardProps {
   id: number;
@@ -16,7 +17,7 @@ function ReviewCard({id, title, imageSrc, review, userRating, filmRating, review
   const [isExpanded, setIsExpanded] = useState(false);
 
   const maxReviewLength = 500;
-  const truncatedReview = review.length > maxReviewLength ? review.slice(0, maxReviewLength) + "..." : review;
+  const truncatedReview = truncateText(review, maxReviewLength);
 
   const handleToggleExpand = () => {
     setIsExpanded(!isExpanded);

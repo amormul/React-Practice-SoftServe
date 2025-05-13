@@ -1,7 +1,7 @@
 import {Card, CardContent, CardMedia, Stack, Typography} from "@mui/material";
 import {StarOutlined} from "@mui/icons-material";
-
-// import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import { truncateText } from "../../utils";
 
 interface MediaCardProps {
   id: number;
@@ -12,18 +12,11 @@ interface MediaCardProps {
 }
 
 function MediaCard({...props}: MediaCardProps) {
-  const {title, imageSrc, description, rating} = props;
-
-  // const navigate = useNavigate()
-
-  const maxDescriptionLength = 45;
-  const truncatedDescription =
-    description && description.length > maxDescriptionLength
-      ? description.slice(0, maxDescriptionLength) + "..."
-      : description;
+  const {id, title, imageSrc, description, rating} = props;
+  const navigate = useNavigate()
 
   const handleCardClick = () => {
-    // navigate(`/item/${id}`);
+    navigate(`/film/${id}/details`);
   };
 
   return (
@@ -59,13 +52,13 @@ function MediaCard({...props}: MediaCardProps) {
         >
           {title}
         </Typography>
-        {truncatedDescription && (
+        {description && (
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{mt: 1, textAlign: "left"}}
           >
-            {truncatedDescription}
+            {truncateText(description, 45)}
           </Typography>
         )}
       </CardContent>

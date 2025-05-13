@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {Link, Typography} from "@mui/material";
+import {truncateText} from "../../utils.ts";
 
 interface UserBioProps {
   bio: string;
@@ -9,7 +10,6 @@ interface UserBioProps {
 export default function UserBio({bio, maxWords}: UserBioProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpand = () => setIsExpanded(!isExpanded);
-  const truncatedBio = bio.split(" ").slice(0, maxWords).join(" ") + "...";
 
   return (
     <Typography
@@ -18,7 +18,7 @@ export default function UserBio({bio, maxWords}: UserBioProps) {
       variant="subtitle2"
       textAlign="justify"
     >
-      {isExpanded ? bio : truncatedBio}
+      {isExpanded ? bio : truncateText(bio, maxWords)}
       <Link
         underline="hover"
         onClick={toggleExpand}
