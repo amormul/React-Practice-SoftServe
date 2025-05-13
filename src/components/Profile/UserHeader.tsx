@@ -1,6 +1,7 @@
 import {Avatar, Button, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import ProfileStatCard from "./ProfileStatCard.tsx";
 import UserBio from "./UserBio.tsx";
+import {useNavigate} from "react-router-dom";
 import {DateRangeOutlined} from "@mui/icons-material";
 
 interface UserHeaderProps {
@@ -18,11 +19,11 @@ interface UserHeaderProps {
 
 function UserHeader({avatarUrl, username, dateJoined, bio, isOwner, statistics}: UserHeaderProps) {
   const theme = useTheme();
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleEditClick = () => {
-    // navigate('/settings');
+    navigate('/editProfile');
   };
 
   return (
@@ -68,11 +69,11 @@ function UserHeader({avatarUrl, username, dateJoined, bio, isOwner, statistics}:
                 {dateJoined}
               </Typography>
             </Stack>
-            {!isSmallScreen && <UserBio bio={bio} maxWords={25}/>}
+            {!isSmallScreen && <UserBio bio={bio} maxWords={170}/>}
             {!isSmallScreen && isOwner && <Button onClick={handleEditClick}>Edit Profile</Button>}
           </Stack>
         </Stack>
-        {isSmallScreen && <UserBio bio={bio} maxWords={25}/>}
+        {isSmallScreen && <UserBio bio={bio} maxWords={120}/>}
         {isSmallScreen && isOwner && <Button onClick={handleEditClick}>Edit Profile</Button>}
       </Grid>
 
