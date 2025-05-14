@@ -14,8 +14,6 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
-    "jspdf": "^3.0.1",
-    "pdf-lib": "^1.17.1",
     "pdfmake": "^0.2.20",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
