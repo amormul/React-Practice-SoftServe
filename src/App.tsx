@@ -1,4 +1,5 @@
 
+
 import NotFoundPage from './pages/NotFound.tsx';
 import MainPage from "./pages/MainPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx"
@@ -47,6 +48,7 @@ function App() {
     </>
 
   )
+
 }
 
 
