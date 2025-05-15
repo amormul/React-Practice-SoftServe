@@ -20,13 +20,13 @@ interface TicketPanelProps {
 }
 
 const TicketPanel: React.FC<TicketPanelProps> = ({
-                                                     selectedSeats,
-                                                     halls,
-                                                     sessions,
-                                                     onRemoveSeat,
-                                                     onPurchase,
-                                                     userTickets,
-                                                 }) => {
+    selectedSeats,
+    halls,
+    sessions,
+    onRemoveSeat,
+    onPurchase,
+    userTickets,
+}) => {
     const [activeTab, setActiveTab] = useState(0)
     const [downloadingTicket, setDownloadingTicket] = useState<string | number | null>(null)
 

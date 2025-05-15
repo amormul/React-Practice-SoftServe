@@ -16,13 +16,13 @@ interface HallSessionSelectorProps {
 }
 
 const HallSessionSelector: React.FC<HallSessionSelectorProps> = ({
-                                                                     halls,
-                                                                     sessions,
-                                                                     selectedHallId,
-                                                                     selectedSessionId,
-                                                                     onHallChange,
-                                                                     onSessionChange,
-                                                                 }) => {
+    halls,
+    sessions,
+    selectedHallId,
+    selectedSessionId,
+    onHallChange,
+    onSessionChange,
+}) => {
     const handleHallChange = (event: SelectChangeEvent<number>) => {
         onHallChange(event.target.value as number)
     }

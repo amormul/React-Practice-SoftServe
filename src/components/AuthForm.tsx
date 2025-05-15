@@ -51,16 +51,16 @@ const AuthForm: React.FC = () => {
             <Tabs value={mode} onChange={handleTabChange} centered sx={{
                 "& .MuiTabs-indicator": { backgroundColor: "#FF0000" },
             }}>
-                <Tab label="Вхід" value="login"  sx={{
+                <Tab label="Вхід" value="login" sx={{
                     color: "#000",
                     "&.Mui-selected": {
                         color: "#FF0000",
                     },
-                }}/>
+                }} />
                 <Tab label="Регістрація" value="register" sx={{
-                    color: "#000", // default text color
+                    color: "#000",
                     "&.Mui-selected": {
-                        color: "#FF0000", // color of selected tab text
+                        color: "#FF0000",
                     },
                 }} />
             </Tabs>
@@ -152,34 +152,34 @@ const AuthForm: React.FC = () => {
                     }}
                 />
                 <Button fullWidth variant="contained" type="submit" className="auth_form_button"
-                        sx={{
-                            backgroundColor: '#FF0000',
-                            border: 'none',
-                            transition: '.4s',
-                            borderRadius: '15px',
-                            '&:hover': {
-                                backgroundColor: 'darkred',
+                    sx={{
+                        backgroundColor: '#FF0000',
+                        border: 'none',
+                        transition: '.4s',
+                        borderRadius: '15px',
+                        '&:hover': {
+                            backgroundColor: 'darkred',
 
-                            },
-                            '&:focus': {
-                                outline: 'none',
-                                backgroundColor: 'crimson',
-                                border: 'none',
-                            },
-                            '&:active': {
-                                backgroundColor: 'red',
-                            }
-                        }}>
+                        },
+                        '&:focus': {
+                            outline: 'none',
+                            backgroundColor: 'crimson',
+                            border: 'none',
+                        },
+                        '&:active': {
+                            backgroundColor: 'red',
+                        }
+                    }}>
                     {mode === "login" ? "Увійти" : "Зареєструватися"}
                 </Button>
                 <FormControlLabel
                     control={<Checkbox defaultChecked
-                                       sx={{
-                                           color:"#FF0000",
-                                           '&.Mui-checked': {
-                                               color: "FF0000",
-                                           },
-                                       }}/>}
+                        sx={{
+                            color: "#FF0000",
+                            '&.Mui-checked': {
+                                color: "FF0000",
+                            },
+                        }} />}
                     label="Запам'ятати мене"
                 />
             </Box>
