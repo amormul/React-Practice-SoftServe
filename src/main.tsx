@@ -1,8 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import AuthForm from './components/AuthForm.tsx'
+import App from './App'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthForm />
+    <App />
   </StrictMode>,
 )
+

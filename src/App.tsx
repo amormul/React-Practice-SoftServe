@@ -3,6 +3,7 @@ import MainPage from "./pages/MainPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx"
 import MoviePage from "./pages/MoviePage.tsx"
 import MovieProvider from "./context/MovieProvider.tsx"
+import AdminPage from "./pages/AdminPage.tsx"
 import './App.css'
 import {
   createBrowserRouter,
@@ -25,7 +26,13 @@ const router = createBrowserRouter([
     path: "/movie/:movieId",
     element: <MoviePage />,
     errorElement: <NotFoundPage />
+  },
+  {
+    path: "/admin",
+    element: <AdminPage />,
+    errorElement: <NotFoundPage />
   }
+
 ]);
 
 
