@@ -14,7 +14,7 @@ export default function UserBio({bio, maxWords}: UserBioProps) {
   return (
     <Typography
       maxWidth={{md: "450px", lg: "500px", xl: "600px"}}
-      fontSize={{xs: "0.7rem", sm: "0.75rem", md: "0.8rem", lg: "0.85rem"}}
+      fontSize={{xs: "0.8rem", lg: "0.85rem"}}
       variant="subtitle2"
       textAlign="justify"
     >

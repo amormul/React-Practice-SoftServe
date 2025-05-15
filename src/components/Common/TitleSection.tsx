@@ -4,7 +4,7 @@ import React from "react";
 
 interface SectionProps {
   title: string;
-  description: string;
+  description?: string;
   children: React.ReactNode;
 }
 
