@@ -37,16 +37,10 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{paddingX: {xs: 0, sm: '16px'}}}>
         <Toolbar disableGutters>
           {/* Left Logo Desktop */}
-          <Box
-            sx={{
-              display: {xs: 'none', md: 'flex'},
-              backgroundColor: '#FF0000',
-              borderRadius: 2
-            }}
-          >
+          <Box sx={{display: {xs: 'none', md: 'flex'}, backgroundColor: '#FF0000', borderRadius: 2}}>
             <img src="/logo.svg" alt="Logo" style={{height: '50px'}}/>
           </Box>
 
@@ -65,15 +59,9 @@ function ResponsiveAppBar() {
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
+              anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+              transformOrigin={{vertical: 'top', horizontal: 'left'}}
               keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{display: {xs: 'block', md: 'none'}}}
@@ -88,7 +76,7 @@ function ResponsiveAppBar() {
 
           {/* Logo Mobile  */}
           <Box sx={{
-            flexGrow: 1,
+            flexGrow: {xs: 1, sm: 0},
             display: {xs: 'flex', md: 'none'}
           }}
           >
@@ -113,30 +101,34 @@ function ResponsiveAppBar() {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{my: 2, color: 'white', display: 'block'}}
+                sx={{my: 2, display: 'block'}}
               >
                 {page}
               </Button>
             ))}
           </Box>
 
-          {/* Search Bar */}
+          {/* Mobile Search Icon */}
+          <IconButton aria-label="search" sx={{display: {xs: 'flex', sm: 'none'}}}>
+            <SearchIcon/>
+          </IconButton>
+
+          {/* Desktop Search Bar */}
           <Box
             sx={{
-              flexGrow: {xs: 0, sm: 1},
-              display: 'flex',
+              flexGrow: 1,
+              display: {xs: 'none', sm: 'flex'},
               alignItems: 'center',
-              // backgroundColor: "white",
+              backgroundColor: 'white',
               borderRadius: 5,
-              px: {xs: 0, sm: 1},
-              mx: 2,
+              px: 1,
+              mx: 2
             }}
           >
-            <SearchIcon sx={{color: "black"}}/>
+            <SearchIcon sx={{color: 'black'}}/>
             <InputBase
               placeholder="Пошук…"
               sx={{
-                display: {xs: 'none', sm: 'flex'},
                 ml: 1,
                 flex: 1,
                 color: "black"
@@ -153,13 +145,10 @@ function ResponsiveAppBar() {
               alignItems: 'center',
               cursor: 'pointer',
               borderRadius: 2,
-              '&:hover': {
-                backgroundColor: '#FF0000', // Hover effect
-              },
-              '&:active': {
-                backgroundColor: 'rgba(255, 255, 255, 0.2)', // Active effect
-              },
-              p: '5px', // Optional padding for better spacing
+              backgroundColor: anchorElUser ? '#2e2e2e' : undefined,
+              borderBottom: anchorElUser ? '2px solid #FF0000' : undefined,
+              '&:hover': {backgroundColor: '#2e2e2e'},
+              p: '6px',
             }}
           >
             <IconButton sx={{p: 0}}>
@@ -174,18 +163,11 @@ function ResponsiveAppBar() {
               Username
             </Typography>
             <Menu
-              // sx={{mt: '50px'}}
               id="menu-appbar"
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
+              anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+              transformOrigin={{vertical: 'top', horizontal: 'right'}}
               keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
