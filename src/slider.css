@@ -1,6 +1,5 @@
-.slick-slide {
-    padding: 2px 8px 1rem 1px;
-    box-sizing: border-box;
+.card-slider .slick-slide {
+    padding: 8px 10px 1rem 1px;
 }
 
 .slick-track {

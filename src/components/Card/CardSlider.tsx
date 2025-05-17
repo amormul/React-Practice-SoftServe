@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import "./CardSlider.css";
+import "../../slider.css";
 import React from "react";
 
 interface CardSliderProps {
@@ -14,13 +14,13 @@ function CardSlider({items, CardComponent, NoItemsComponent}: CardSliderProps) {
   const settings = {
     infinite: false,
     speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 3,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     responsive: [
       {
         breakpoint: 1000,
         settings: {
-          slidesToShow: 5,
+          slidesToShow: 4,
         },
       },
       {
@@ -30,7 +30,7 @@ function CardSlider({items, CardComponent, NoItemsComponent}: CardSliderProps) {
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 650,
         settings: {
           slidesToShow: 3,
         },
@@ -50,13 +50,11 @@ function CardSlider({items, CardComponent, NoItemsComponent}: CardSliderProps) {
   }
 
   return (
-    <div className="slider-container">
-      <Slider {...settings}>
-        {items.map((item, index) => (
-          <CardComponent key={index} {...item} />
-        ))}
-      </Slider>
-    </div>
+    <Slider {...settings} className="card-slider">
+      {items.map((item, index) => (
+        <CardComponent key={index} {...item} />
+      ))}
+    </Slider>
   );
 }
 
