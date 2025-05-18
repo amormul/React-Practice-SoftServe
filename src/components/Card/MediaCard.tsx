@@ -22,13 +22,14 @@ function MediaCard({...props}: MediaCardProps) {
   return (
     <Card
       sx={{
-        maxWidth: "200px",
-        maxHeight: "375px",
+        // width: "200px",
+        maxHeight: "400px",
         borderRadius: "5px",
         transition: "transform 0.3s",
         cursor: "pointer",
         "&:hover": {
           transform: "scale(1.01)",
+          border: "1px solid rgba(255, 0, 0, 0.8)",
         },
       }}
       onClick={handleCardClick}
