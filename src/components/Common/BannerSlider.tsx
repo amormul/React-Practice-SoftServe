@@ -2,8 +2,8 @@ import {Box, Button, Chip, Stack, Typography} from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, {SetStateAction, useEffect, useState} from "react";
+import {Link} from 'react-router-dom';
 
 const movies = [
   {
@@ -36,6 +36,12 @@ const movies = [
 ];
 
 const BannerSlider = () => {
+  const [activeSlide, setActiveSlide] = useState(-1);
+
+  useEffect(() => {
+    setActiveSlide(0);
+  }, []);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -44,7 +50,34 @@ const BannerSlider = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     fade: true,
-    pauseOnHover: false
+    arrows: false,
+    pauseOnHover: false,
+    beforeChange: (_current: never, next: SetStateAction<number>) => setActiveSlide(next),
+    customPaging: (i: number) => (
+      <div
+        style={{
+          width: "10px",
+          height: "10px",
+          borderRadius: "50%",
+          backgroundColor: activeSlide === i ? "#FF0000" : "#FFFFFF",
+          margin: "0 5px",
+          cursor: "pointer",
+        }}
+      />
+    ),
+    appendDots: (dots: React.ReactNode) => (
+      <div
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {dots}
+      </div>
+    ),
   };
 
   return (
@@ -53,29 +86,23 @@ const BannerSlider = () => {
         <Box
           key={index}
           sx={{
-            height: '100vh',
-            backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.85) 10%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 70%), url(${movie.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: '50% 10%',
             position: 'relative',
-            color: '#fff',
+            height: '100vh',
           }}
         >
-
           {/* Film Details */}
           <Box
             sx={{
               position: 'absolute',
-              bottom: 60,
-              left: {md: 50},
-              // right: {sm: 10},
-              maxWidth: {xs: '100vw', md: "70%"},
-              maxHeight: {xs: 'none', md: 500},
-              p: {xs: 2, sm: 3, md: 2},
+              width: {xs: '100%', md: '80%', lg: '55%'},
+              left: 0,
+              bottom: {xs: '10%', sm: 30, md: 10},
+              zIndex: 10,
+              padding: {xs: 2, sm: 5, md: 6, lg: 10},
             }}
           >
             <Typography
-              fontSize={{xs: "1.3rem", sm: "2rem", md: "2.6rem"}}
+              fontSize={{xs: "1.65rem", sm: "2rem", md: "2.7rem"}}
               component="h3"
               gutterBottom
               fontWeight="bold"
@@ -99,7 +126,7 @@ const BannerSlider = () => {
               ))}
             </Stack>
 
-            <Stack direction="row" spacing={{xs: 1, md: 2}} alignItems="center" mb={2}>
+            <Stack direction="row" spacing={{xs: 0.6, md: 1}} alignItems="center" mb={2}>
               <CalendarMonthIcon fontSize="small"/>
               <Typography>{movie.release}</Typography>
               <span>•</span>
@@ -109,17 +136,24 @@ const BannerSlider = () => {
               <Typography>IMDb {movie.rating}</Typography>
             </Stack>
 
-            <Typography display={{xs: "none", md: "flex"}} variant="body1" component="p" textAlign="left"
-                        paddingBottom={2}>
+            <Typography
+              display={{xs: "none", md: "flex"}}
+              variant="body1"
+              component="p"
+              textAlign="left"
+              paddingBottom={2}
+            >
               {movie.description}
             </Typography>
 
             <Stack direction="row" spacing={2}>
               <Button
-                href="#"
-                sx={{fontSize: {xs: '0.9rem', sm: '1rem', md: '1.5rem'}}}
+                component={Link}
+                to={`/sessions?film=${encodeURIComponent(movie.title)}`}
+                sx={{fontSize: {xs: '0.97rem', sm: '1.2rem', md: '1.5rem'}}}
                 variant="contained"
-                color="secondary"
+                size="large"
+                color="primary"
                 startIcon={<CalendarMonthIcon/>}
               >
                 Обрати сеанс
@@ -140,6 +174,21 @@ const BannerSlider = () => {
               </Button>
             </Stack>
           </Box>
+
+          {/* Background Image */}
+          <Box
+            key={index}
+            sx={{
+              height: '100%',
+              backgroundImage: `linear-gradient(to top, rgba(23,23,23,9) 10%, rgba(23,23,23,0.35) 40%, rgba(23,23,23,0) 70%), url(${movie.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: '50% 10%',
+              position: 'relative',
+              color: '#fff',
+              transition: activeSlide === index ? 'transform 10s ease-in-out' : 'none',
+              transform: activeSlide === index ? 'scale(1.1)' : 'scale(1)',
+            }}
+          />
         </Box>
       ))}
     </Slider>

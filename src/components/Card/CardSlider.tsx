@@ -1,7 +1,4 @@
 import Slider from "react-slick";
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
-import "../../slider.css";
 import React from "react";
 
 interface CardSliderProps {
