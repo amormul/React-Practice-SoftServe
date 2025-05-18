@@ -4,11 +4,13 @@ import ProfilePage from "./pages/ProfilePage.tsx"
 import MoviePage from "./pages/MoviePage.tsx"
 import MovieProvider from "./context/MovieProvider.tsx"
 import EditProfile from "./components/Profile/EditProfile.tsx";
-import './App.css'
+import { ThemeProvider } from '@emotion/react';
+import {CssBaseline} from "@mui/material";
 import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom';
+import darkTheme from './theme/theme.ts';
 
 const router = createBrowserRouter([
   {
@@ -36,9 +38,12 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <MovieProvider>
-        <RouterProvider router={router} />
-      </MovieProvider>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline/>
+        <MovieProvider>
+          <RouterProvider router={router} />
+        </MovieProvider>
+      </ThemeProvider>
     </>
   );
 }

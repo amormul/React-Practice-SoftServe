@@ -4,25 +4,25 @@ const darkRedTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#b71c1c", // Dark red
+      main: "#FF0000",
     },
     secondary: {
-      main: "#ffffff", // White
+      main: "#ffffff",
     },
     background: {
-      default: "#121212", // Dark background
-      paper: "#000000", // Slightly lighter dark background
+      default: "#171717",
+      paper: "#000000",
     },
     text: {
-      primary: "#ffffff", // White text
-      secondary: "#ffcccb", // Light red text
+      primary: "#ffffff",
+      secondary: "#ffffff",
     },
   },
   typography: {
     fontFamily: "'Poppins', sans-serif",
     fontSize: 16,
     h1: {
-      fontFamily: "'Roboto Slab', serif", // Example for headers
+      fontFamily: "'Poppins', sans-serif", // Example for headers
       fontWeight: 700,
     },
     body1: {
@@ -33,6 +33,23 @@ const darkRedTheme = createTheme({
       fontFamily: "'Poppins', sans-serif",
       fontWeight: 600,
       textTransform: "capitalize",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 5,
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#FF0000",
+          color: "#FFFFFF",
+        },
+      },
     },
   },
 });
