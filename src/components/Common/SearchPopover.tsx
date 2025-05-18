@@ -15,9 +15,9 @@ function SearchPopover() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [query, setQuery] = useState<string>('')
   const [films, setFilms] = useState<Film[]>([
-    { id: 1, title: 'Inception', releaseDate: '2010' },
-    { id: 2, title: 'Interstellar', releaseDate: '2014' },
-    { id: 3, title: 'Dunkirk', releaseDate: '2017' },
+    {id: 1, title: 'Inception', releaseDate: '2010'},
+    {id: 2, title: 'Interstellar', releaseDate: '2014'},
+    {id: 3, title: 'Dunkirk', releaseDate: '2017'},
   ]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +40,6 @@ function SearchPopover() {
   };
 
   const open = Boolean(anchorEl);
-  console.log(open)
   const id = open ? 'search-popover' : undefined;
 
   return (
