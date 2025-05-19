@@ -1,110 +1,215 @@
 {
-  "id": 1,
-  "title": "Inception",
-  "posterUrl": "/src/assets/movies/inseption.jpg",
-  "trailerUrl": "https://www.youtube.com/watch?v=fsQgc9pCyDU",
-  "releaseDate": "2010-07-16",
-  "description": "A skilled thief is given a chance at redemption if he can successfully perform an inception.",
-  "IMDbRating": "8.8",
-  "details": [
+  "films": [
     {
-      "name": "Директор",
-      "description": "Christopher Nolan"
+      "id": 0,
+      "title": "Початок",
+      "posterUrl": "https://image.tmdb.org/t/p/original/yBm3aFsxBZKQwQOCBgQmOUsFvBO.jpg",
+      "trailerUrl": "https://www.youtube.com/watch?v=YoHD9XEInc0",
+      "releaseDate": "2010",
+      "description": "Ми звикли, що в нашому розумінні злодій - це людина здатна вкрасти якісь цінності або гроші. Сюжет фантастичного бойовика «Початок» розповідає про злодіїв здатних вкрасти ідею прямо у людини з підсвідомості. Одним з таких є головний герой фільму Домінік Кобб. Після того як його дружина померла, він змушений ховатися, і не може навіть повернутися в країну, щоб побачити дітей. Якось раз Кобб отримує дуже неординарне замовлення: йому потрібно не вкрасти, а навпаки впровадити нову ідею в підсвідомість людини. Домініку не надто хотітися братися за цю справу, але замовник в обмін пропонує можливість повернутися додому. Заручившись підтримкою професіоналів цієї справи, Кобб починає розробляти план як все провернути. Все потрібно дуже добре продумати, адже злодіям доведеться відтворити багатошарову реальність в підсвідомості об'єкта, в результаті чого межі можуть почати стиратися.",
+      "IMDbRating": 8.8,
+      "genres": ["Наукова фантастика", "Трилер"],
+      "duration": "148 хвилин",
+      "language": "Англійська",
+      "director": "Крістофер Нолан",
+      "actors": [
+        {
+          "name": "Леонардо Ді Капріо",
+          "role": "Дом Кобб",
+          "photoUrl": "https://hips.hearstapps.com/hbz.h-cdn.co/assets/16/03/hbz-leo-hari-transformation-2002-gettyimages-2446640.jpg?crop=1.0xw:1xh;center,top&resize=980:*"
+        },
+        {
+          "name": "Джозеф Гордон-Левітт",
+          "role": "Артур",
+          "photoUrl": "https://images.kinorium.com/persona/600/249949.jpg?1643276157"
+        },
+        {
+          "name": "Елліот Пейдж",
+          "role": "Ariadne",
+          "photoUrl": "https://images.kinorium.com/persona/600/511204.jpg?1677678312"
+        },
+        {
+          "name": "Том Гарді",
+          "role": "Eames",
+          "photoUrl": "https://images.kinorium.com/persona/600/273636.jpg?1601108883"
+        },
+        {
+          "name": "Кілліан Мерфі",
+          "role": "Robert Fischer",
+          "photoUrl": "https://images.kinorium.com/persona/600/461224.jpg?1706016314"
+        },
+        {
+          "name": "Маріон Котіяр",
+          "role": "Mal",
+          "photoUrl": "https://images.kinorium.com/persona/600/139347.jpg?1547639628"
+        },
+        {
+          "name": "Майкл Кейн",
+          "role": "Miles",
+          "photoUrl": "https://images.kinorium.com/persona/600/323.jpg?1643283843"
+        }
+      ],
+      "reviews": [
+        {
+          "id": 1,
+          "user": "JohnDoe",
+          "comment": "Дивовижний фільм із захоплюючим сюжетом!",
+          "rating": 5,
+          "date": "2023"
+        },
+        {
+          "id": 2,
+          "user": "JaneSmith",
+          "comment": "Шедевр від Крістофера Нолана.",
+          "rating": 4.5,
+          "date": "2023"
+        }
+      ],
+      "relatedFilms": [
+        {
+          "id": 2,
+          "title": "Інтерстеллар",
+          "posterUrl": "/src/assets/movies/interstellar.jpg"
+        },
+        {
+          "id": 3,
+          "title": "Престиж",
+          "posterUrl": "/src/assets/movies/prestige.jpg"
+        }
+      ]
     },
     {
-      "name": "Жанр",
-      "description": "Science Fiction, Thriller"
+      "id": 1,
+      "title": "Темний лицар",
+      "posterUrl": "https://image.tmdb.org/t/p/original/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "trailerUrl": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
+      "releaseDate": "2008",
+      "description": "Бетмен протистоїть Джокеру, кримінальному генію, який хоче занурити Готем у хаос.",
+      "IMDbRating": 9.0,
+      "genres": ["Екшн", "Кримінал", "Драма"],
+      "duration": "152 хвилин",
+      "language": "Англійська",
+      "director": "Крістофер Нолан",
+      "actors": [
+        {
+          "name": "Крістіан Бейл",
+          "role": "Брюс Вейн / Бетмен",
+          "photoUrl": "/src/assets/actors/christian_bale.jpg"
+        },
+        {
+          "name": "Гіт Леджер",
+          "role": "Джокер",
+          "photoUrl": "/src/assets/actors/heath_ledger.jpg"
+        }
+      ],
+      "reviews": [],
+      "relatedFilms": []
     },
-    {
-      "name": "Тривалість",
-      "description": "148 minutes"
-    },
-    {
-      "name": "Мова",
-      "description": "English"
-    }
-  ],
-  "actors": [
-    {
-      "name": "Leonardo DiCaprio",
-      "role": "Dom Cobb",
-      "photoUrl": "/src/assets/actors/sedi.png"
-    },
-    {
-      "name": "Joseph Gordon",
-      "role": "Arthur",
-      "photoUrl": "/src/assets/actors/domi.png"
-    },
-    {
-      "name": "Elliot Page",
-      "role": "Ariadne",
-      "photoUrl": "/src/assets/actors/djeki.png"
-    },
-    {
-      "name": "Actor3",
-      "role": "Role2",
-      "photoUrl": "/src/assets/actors/bread.png"
-    },
-    {
-      "name": "Actor4",
-      "role": "Role3",
-      "photoUrl": "/src/assets/actors/aramis.png"
-    },
-    {
-      "name": "Actor5",
-      "role": "Role4",
-      "photoUrl": "/src/assets/actors/dhoshua.png"
-    }
-  ],
-  "moreLikeThisFilms": [
     {
       "id": 2,
-      "title": "Interstellar",
-      "imageSrc": "/src/assets/movies/inseption.jpg"
+      "title": "Інтерстеллар",
+      "posterUrl": "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",
+      "trailerUrl": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
+      "releaseDate": "2014",
+      "description": "Команда дослідників подорожує через кротовину в космосі, щоб забезпечити виживання людства.",
+      "IMDbRating": 8.6,
+      "genres": ["Пригоди", "Драма", "Наукова фантастика"],
+      "duration": "169 хвилин",
+      "language": "Англійська",
+      "director": "Крістофер Нолан",
+      "actors": [
+        {
+          "name": "Меттью Макконахі",
+          "role": "Купер",
+          "photoUrl": "/src/assets/actors/matthew_mcconaughey.jpg"
+        },
+        {
+          "name": "Енн Гетевей",
+          "role": "Бренд",
+          "photoUrl": "/src/assets/actors/anne_hathaway.jpg"
+        }
+      ],
+      "reviews": [],
+      "relatedFilms": []
     },
     {
       "id": 3,
-      "title": "The Prestige",
-      "imageSrc": "/src/assets/movies/thedarknight.jpg"
+      "title": "Матриця",
+      "posterUrl": "https://image.tmdb.org/t/p/original/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
+      "trailerUrl": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
+      "releaseDate": "1999",
+      "description": "Хакер дізнається про справжню природу своєї реальності та свою роль у війні проти її контролерів.",
+      "IMDbRating": 8.7,
+      "genres": ["Екшн", "Наукова фантастика"],
+      "duration": "136 хвилин",
+      "language": "Англійська",
+      "director": "Лана Вачовскі, Ліллі Вачовскі",
+      "actors": [
+        {
+          "name": "Кіану Рівз",
+          "role": "Нео",
+          "photoUrl": "/src/assets/actors/keanu_reeves.jpg"
+        },
+        {
+          "name": "Керрі-Енн Мосс",
+          "role": "Трініті",
+          "photoUrl": "/src/assets/actors/carrie_anne_moss.jpg"
+        }
+      ],
+      "reviews": [],
+      "relatedFilms": []
     },
     {
       "id": 4,
-      "title": "Memento",
-      "imageSrc": "/src/assets/movies/Dune_(2021_film).jpg"
-    },
-    {
-      "id": 4,
-      "title": "Memento",
-      "imageSrc": "/src/assets/movies/Dune_(2021_film).jpg"
-    },
-    {
-      "id": 4,
-      "title": "Memento",
-      "imageSrc": "/src/assets/movies/Dune_(2021_film).jpg"
-    },
-    {
-      "id": 4,
-      "title": "Memento",
-      "imageSrc": "/src/assets/movies/Dune_(2021_film).jpg"
-    },
-    {
-      "id": 4,
-      "title": "Memento",
-      "imageSrc": "/src/assets/movies/Dune_(2021_film).jpg"
-    }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "user": "JohnDoe",
-      "comment": "Amazing movie with a mind-bending plot!",
-      "date": "2023-10-01"
-    },
-    {
-      "id": 2,
-      "user": "JaneSmith",
-      "comment": "A masterpiece by Christopher Nolan.",
-      "date": "2023-10-02"
+      "title": "Місія неможлива: Фінальна розплата",
+      "posterUrl": "https://www.themoviedb.org/t/p/w1280/z53D72EAOxGRqdr7KXXWp9dJiDe.jpg",
+      "trailerUrl": "https://www.youtube.com/watch?v=s7EdQ4FqbhY",
+      "releaseDate": "2025",
+      "description": "Агент секретної служби, яка спеціалізується на неможливих місіях, Ітан Гант (Том Круз) готується до нового завдання. Впливовий зловмисник планує заволодіти доступом до штучного інтелекту, який здатен змінити весь порядок у світі. Перешкодити його планам неможливо. Однак саме для таких ситуацій і існує команда Ітана Ганта, з якою він вирушає у чергову місію. Пригодницький трилер та бойовик «МІСІЯ НЕМОЖЛИВА: ФІНАЛЬНА РОЗПЛАТА» знято спільними зусиллями США та Великої Британії. Фільм стане восьмою частиною франшизи «Місія неможлива». Плани по його виробництву були оголошені ще у 2019 році. Спершу очікувалося, що восьмий фільм зніматимуть одночасно з сьомим, задіявши той самий акторський склад. У 2021 році плани змінилися. Режисером та сценаристом знову став Крістофер Маккуоррі. Основні зйомки проходили у студії поблизу Лондона, а локації для зйомок поза приміщенням обрали на Мальті, у Південній Африці та Норвегії.",
+      "IMDbRating": 8.9,
+      "genres": ["Кримінал", "Драма"],
+      "duration": "170 хвилин",
+      "language": "Англійська",
+      "director": "Крістофер МакКуаррі",
+      "actors": [
+        {
+          "name": "Том Круз",
+          "role": "Ethan Hunt",
+          "photoUrl": "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/eOh4ubpOm2Igdg0QH2ghj0mFtC.jpg"
+        },
+        {
+          "name": "Хейлі Атвелл",
+          "role": "Grace",
+          "photoUrl": "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/zM53P3iVyEnRNEeotU4vCCv13II.jpg"
+        },
+        {
+          "name": "Ving Rhames",
+          "role": "Luther Stickell",
+          "photoUrl": "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/4gpLVNKPZlVucc4fT2fSZ7DksTK.jpg"
+        },
+        {
+          "name": "Саймон Пегг",
+          "role": "Benjamin 'Benji' Dunn",
+          "photoUrl": "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/jw8bEEoTOithyNf0qxu4Zt1yaKp.jpg"
+        },
+        {
+          "name": "Нарис Моралеса",
+          "role": "Gabriel",
+          "photoUrl": "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/kXQW3Uu8MnbIsPBzYNYDxFgDIDg.jpg"
+        },
+        {
+          "name": "Pom Clementieff",
+          "role": "Paris",
+          "photoUrl": "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/hfUKAI2kXTMMWjno0i4sLPJud5N.jpg"
+        },
+        {
+          "name": "Генрі Черні",
+          "role": "Eugene Kittridge",
+          "photoUrl": "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/zOWZzRmliKf9032IOOq0a3jXhVv.jpg"
+        }
+      ],
+      "reviews": [],
+      "relatedFilms": []
     }
   ]
 }
