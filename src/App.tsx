@@ -5,7 +5,7 @@ import ProfilePage from "./pages/ProfilePage.tsx"
 import MoviePage from "./pages/MoviePage.tsx"
 import MovieProvider from "./context/MovieProvider.tsx"
 import EditProfile from "./components/Profile/EditProfile.tsx";
-import MovieFilter from "./components/MovieFilter.tsx";
+import CatalogPage from "./pages/CatalogPage.tsx";
 import './App.css'
 import {
   createBrowserRouter,
@@ -34,8 +34,8 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />
   },
   {
-    path: "/moviefiltertest",
-    element: <MovieFilter />,
+    path: "/catalog",
+    element: <CatalogPage />,
     errorElement: <NotFoundPage />
   }
 ]);
