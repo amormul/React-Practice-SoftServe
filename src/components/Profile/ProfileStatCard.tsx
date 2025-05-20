@@ -3,7 +3,7 @@ import {Card, CardActionArea, CardContent, Typography} from "@mui/material";
 interface ProfileStatCardProps {
   title: string;
   value: number;
-  href: string;
+  href?: string;
 }
 
 const ProfileStatCard = ({title, value, href}: ProfileStatCardProps) => {
@@ -13,7 +13,7 @@ const ProfileStatCard = ({title, value, href}: ProfileStatCardProps) => {
         backgroundColor: '#1f1f1f'
       }}
     >
-      <CardActionArea href={href}>
+      <CardActionArea component="a" href={href}>
         <CardContent sx={{textAlign: "center", padding: 1}}>
           <Typography
             gutterBottom
