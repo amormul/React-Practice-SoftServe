@@ -1,5 +1,5 @@
 import React, {useState, ChangeEvent, FormEvent} from "react";
-import {Api} from "./api/config.ts"
+import {Api} from "../api/config"
 import {
     Box,
     Tabs,
@@ -12,24 +12,18 @@ import {
 } from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
 
-
-type AuthMode = "login" | "register";
-
 interface FormData {
-    name: string;
     email: string;
     password: string;
 }
 
 const AuthForm: React.FC = () => {
-    const [mode, setMode] = useState<AuthMode>("login");
     const navigate = useNavigate();
     const location = useLocation();
 
     const queryParams = new URLSearchParams(location.search);
-    const backRoute = queryParams.get("back") || "/";
+    const backRoute = queryParams.get("back") || "/admin";
     const [formData, setFormData] = useState<FormData>({
-        name: "",
         email: "",
         password: "",
     });
@@ -40,7 +34,7 @@ const AuthForm: React.FC = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        const url = mode === "login" ? Api.LOGIN : Api.REGISTER;
+        const url = Api.LOGIN_ADMIN;
 
         try {
             const response = await fetch(url, {
@@ -50,12 +44,11 @@ const AuthForm: React.FC = () => {
                 },
                 body: JSON.stringify(formData),
             });
-
             const data = await response.json();
             console.log(data);
             if (data.success) {
                 localStorage.setItem("token", data.token);
-                navigate(backRoute)
+                navigate(backRoute);
             } else {
                 alert(data.message || "Помилка входу");
             }
@@ -66,15 +59,10 @@ const AuthForm: React.FC = () => {
         }
     };
 
-    const handleTabChange = (event: React.SyntheticEvent, newValue: AuthMode) => {
-        setMode(newValue);
-        console.log(event);
-        setFormData({name: "", email: "", password: ""});
-    };
 
     return (
         <Paper elevation={3} sx={{maxWidth: 400, mx: "auto", mt: 8, p: 4}}>
-            <Tabs value={mode} onChange={handleTabChange} centered sx={{
+            <Tabs centered sx={{
                 "& .MuiTabs-indicator": {backgroundColor: "#FF0000"},
             }}>
                 <Tab label="Вхід" value="login" sx={{
@@ -83,44 +71,9 @@ const AuthForm: React.FC = () => {
                         color: "#FF0000",
                     },
                 }}/>
-                <Tab label="Регістрація" value="register" sx={{
-                    color: "#000", // default text color
-                    "&.Mui-selected": {
-                        color: "#FF0000", // color of selected tab text
-                    },
-                }}/>
             </Tabs>
 
             <Box component="form" onSubmit={handleSubmit} mt={2}>
-                {mode === "register" && (
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        label="Ім'я"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                backgroundColor: '#fff',
-                                borderRadius: '10px',
-                                color: '#000',
-                                '& fieldset': {
-                                    borderColor: "none",
-                                    color: '#fff',
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: "none",
-                                    color: '#fff',
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: "none",
-                                    color: '#fff',
-                                },
-                            },
-                        }}
-                    />
-                )}
                 <TextField
                     fullWidth
                     margin="normal"
@@ -196,18 +149,8 @@ const AuthForm: React.FC = () => {
                                 backgroundColor: 'red',
                             }
                         }}>
-                    {mode === "login" ? "Увійти" : "Зареєструватися"}
+                    "Увійти"
                 </Button>
-                <FormControlLabel
-                    control={<Checkbox defaultChecked
-                                       sx={{
-                                           color: "#FF0000",
-                                           '&.Mui-checked': {
-                                               color: "FF0000",
-                                           },
-                                       }}/>}
-                    label="Запам'ятати мене"
-                />
             </Box>
         </Paper>
     );
