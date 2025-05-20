@@ -15,7 +15,7 @@ import EditProfile from "./components/Profile/EditProfile.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (<><Navbar/><BannerSlider/></>),
+    element: (<><Navbar /><BannerSlider /></>),
     errorElement: <NotFoundPage />
   },
   {
@@ -24,9 +24,9 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       // { path: "/profile/:userId", element: <ProfilePage /> },
-      {path: "/favorites", element: <FavoritePage/>},
-      {path: "/settings", element: <EditProfile/>},
-      {path: "/movie/:movieId", element: <MoviePage/>},
+      { path: "/favorites", element: <FavoritePage /> },
+      { path: "/settings", element: <EditProfile /> },
+      { path: "/movie/:movieId", element: <MoviePage /> },
     ]
   }
 ]);
