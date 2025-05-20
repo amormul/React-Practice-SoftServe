@@ -1,11 +1,47 @@
-import React from 'react';
+import {Stack} from "@mui/material";
+import CardSlider from "../components/Card/CardSlider.tsx";
+import MediaCard from "../components/Card/MediaCard.tsx";
+import ReviewCard from "../components/Card/ReviewCard.tsx";
+import TitleSection from "../components/Common/TitleSection.tsx";
+import profileDataJson from "../data/profileData.json";
+import {useEffect, useState} from "react";
+import UserHeader from "../components/Profile/UserHeader.tsx";
+
 
 const ProfilePage = () => {
-    return (
-        <div>
-            <h1>Profile Page</h1>
-        </div>
-    );
+  const [profileData, setProfileData] = useState<any>(null)
+
+  useEffect(() => {
+    setProfileData(profileDataJson);
+  }, []);
+
+  if (!profileData) {
+    return <div>Loading...</div>
+  }
+
+  const { user, ratings, watchlist, reviews } = profileData;
+  const statistics = {
+    ratings: ratings.length,
+    watchlist: watchlist.length,
+    reviews: reviews.length,
+  };
+
+  return (
+    <Stack spacing={5}>
+      <UserHeader {...user} statistics={statistics} />
+      <TitleSection title="Ratings" description="My Ratings">
+        <CardSlider items={ratings} CardComponent={MediaCard} />
+      </TitleSection>
+      <TitleSection title="Watchlist" description="My Watchlist">
+        <CardSlider items={watchlist} CardComponent={MediaCard} />
+      </TitleSection>
+      <TitleSection title="Reviews" description="My Reviews">
+        {reviews.map((review, index) => (
+          <ReviewCard key={index} {...review} />
+        ))}
+      </TitleSection>
+    </Stack>
+  );
 };
 
 export default ProfilePage;

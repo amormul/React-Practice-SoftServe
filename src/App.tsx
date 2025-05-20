@@ -1,10 +1,11 @@
 
-
 import NotFoundPage from './pages/NotFound.tsx';
 import MainPage from "./pages/MainPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx"
 import MoviePage from "./pages/MoviePage.tsx"
 import MovieProvider from "./context/MovieProvider.tsx"
+import EditProfile from "./components/Profile/EditProfile.tsx";
+import CatalogPage from "./pages/CatalogPage.tsx";
 import './App.css'
 import {
   createBrowserRouter,
@@ -22,7 +23,6 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainPage />,
     errorElement: <NotFoundPage />
-
   },
   {
     path: "/admin",
@@ -59,31 +59,31 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />
   },
   {
+    path: "/profile/editProfile",
+    element: <EditProfile />,
+    errorElement: <NotFoundPage />
+  },
+  {
     path: "/movie/:movieId",
     element: <MoviePage />,
+    errorElement: <NotFoundPage />
+  },
+  {
+    path: "/catalog",
+    element: <CatalogPage />,
     errorElement: <NotFoundPage />
   }
 ]);
 
-
-//  Основне тіло Застосунку
-
 function App() {
-
-
   return (
     <>
-
-      <div className="AppDiv">
-        <MovieProvider>
-          <RouterProvider router={router} />
-        </MovieProvider>
-      </div>
-
+      <MovieProvider>
+        <RouterProvider router={router} />
+      </MovieProvider>
     </>
 
-  )
-
+  );
 }
 
 

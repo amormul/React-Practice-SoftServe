@@ -1,0 +1,90 @@
+{
+  "id": 1,
+  "title": "Inception",
+  "posterUrl": "/src/assets/movies/inseption.jpg",
+  "trailerUrl": "https://www.youtube.com/watch?v=fsQgc9pCyDU",
+  "releaseDate": "2010-07-16",
+  "description": "A skilled thief is given a chance at redemption if he can successfully perform an inception.",
+  "IMDbRating": "8.8",
+  "details": [
+    {
+      "name": "Директор",
+      "description": "Christopher Nolan"
+    },
+    {
+      "name": "Жанр",
+      "description": "Science Fiction, Thriller"
+    },
+    {
+      "name": "Тривалість",
+      "description": "148 minutes"
+    },
+    {
+      "name": "Мова",
+      "description": "English"
+    }
+  ],
+  "actors": [
+    {
+      "name": "Leonardo DiCaprio",
+      "role": "Dom Cobb",
+      "photoUrl": "/src/assets/actors/sedi.png"
+    },
+    {
+      "name": "Joseph Gordon",
+      "role": "Arthur",
+      "photoUrl": "/src/assets/actors/domi.png"
+    },
+    {
+      "name": "Elliot Page",
+      "role": "Ariadne",
+      "photoUrl": "/src/assets/actors/djeki.png"
+    },
+    {
+      "name": "Actor3",
+      "role": "Role2",
+      "photoUrl": "/src/assets/actors/bread.png"
+    },
+    {
+      "name": "Actor4",
+      "role": "Role3",
+      "photoUrl": "/src/assets/actors/aramis.png"
+    },
+    {
+      "name": "Actor5",
+      "role": "Role4",
+      "photoUrl": "/src/assets/actors/dhoshua.png"
+    }
+  ],
+  "moreLikeThisFilms": [
+    {
+      "id": 2,
+      "title": "Interstellar",
+      "imageSrc": "/src/assets/movies/inseption.jpg"
+    },
+    {
+      "id": 3,
+      "title": "The Prestige",
+      "imageSrc": "/src/assets/movies/thedarknight.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Memento",
+      "imageSrc": "/src/assets/movies/Dune_(2021_film).jpg"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "user": "JohnDoe",
+      "comment": "Amazing movie with a mind-bending plot!",
+      "date": "2023-10-01"
+    },
+    {
+      "id": 2,
+      "user": "JaneSmith",
+      "comment": "A masterpiece by Christopher Nolan.",
+      "date": "2023-10-02"
+    }
+  ]
+}
