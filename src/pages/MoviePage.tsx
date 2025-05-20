@@ -1,20 +1,18 @@
-import {Stack} from "@mui/material";
-import filmJson from "../data/filmData.json"
+import {useContext} from "react";
+import {MovieContext} from "../context/MovieProvider.tsx";
 import MovieHeader from "../components/Movie/MovieHeader.tsx";
 import TitleSection from "../components/Common/TitleSection.tsx";
 import CardSlider from "../components/Card/CardSlider.tsx";
 import MediaCard from "../components/Card/MediaCard.tsx";
-import {useEffect, useState} from "react";
-// import ReviewCard from "../components/Card/ReviewCard.tsx";
+import {useParams} from "react-router-dom";
 
 const MoviePage = () => {
-  const [filmData, setFilmData] = useState(null);
+  const {movieId} = useParams();
+  const {movies} = useContext(MovieContext) || {movies: []};
 
-  useEffect(() => {
-    setFilmData(filmJson);
-  }, []);
+  const filmData = movies.find((movie) => movie.title === movieId);
 
-  if (!filmData) return <div>Loading...</div>;
+  if (!filmData) return <div>Film not found</div>;
 
   const {
     title,
@@ -23,44 +21,54 @@ const MoviePage = () => {
     releaseDate,
     description,
     IMDbRating,
-    details,
     actors,
-    moreLikeThisFilms,
-    // comments
+    relatedFilms,
+    genres,
+    duration,
+    language,
+    director,
+    reviews
   } = filmData;
 
   return (
-    <Stack spacing={5}>
+    <>
       <MovieHeader
         title={title}
         posterUrl={posterUrl}
-        trailerUrl={trailerUrl}
         releaseDate={releaseDate}
         description={description}
         IMDbRating={IMDbRating}
-        details={details}
+        trailerUrl={trailerUrl}
+        totalReviews={reviews.length}
+        details={[
+          {name: "Жанри", description: genres.join(", ")},
+          {name: "Тривалість", description: duration},
+          {name: "Мова", description: language},
+          {name: "Режисер", description: director}
+        ]}
       />
       <TitleSection title="Актори">
         <CardSlider
           items={actors.map((actor, index) => ({
-            id: index, // Use index as a unique ID since `actors` doesn't have an `id`
+            id: index,
             title: actor.name,
-            imageSrc: actor.photoUrl,
+            imageUrl: actor.photoUrl,
             description: actor.role,
           }))}
           CardComponent={MediaCard}
         />
       </TitleSection>
       <TitleSection title="Інші фільми">
-        <CardSlider items={moreLikeThisFilms} CardComponent={MediaCard}/>
+        <CardSlider
+          items={relatedFilms.map((film, index) => ({
+            id: index,
+            title: film.title,
+            imageUrl: film.posterUrl
+          }))}
+          CardComponent={MediaCard}
+        />
       </TitleSection>
-
-      {/*<TitleSection title="Коментарі">*/}
-      {/*  {comments.map((comment, index) => (*/}
-      {/*    <ReviewCard key={index} {...comment} />*/}
-      {/*  ))}*/}
-      {/*</TitleSection>*/}
-    </Stack>
+    </>
   );
 };
 

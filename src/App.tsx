@@ -1,90 +1,43 @@
 
 import NotFoundPage from './pages/NotFound.tsx';
-import MainPage from "./pages/MainPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx"
 import MoviePage from "./pages/MoviePage.tsx"
-import MovieProvider from "./context/MovieProvider.tsx"
-import EditProfile from "./components/Profile/EditProfile.tsx";
-import CatalogPage from "./pages/CatalogPage.tsx";
-import './App.css'
+import Layout from './pages/Layout.tsx';
+import BannerSlider from "./components/Common/BannerSlider.tsx";
 import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom';
-import AdminPage from "./pages/AdminPanel.tsx";
-import AdminAuthForm from "./components/admin/AdminAuthForm.tsx";
-import ProtectedRoute from "./components/ProtectedRoute.tsx";
-import TicketBooking from "./pages/TicketBooking.tsx";
-import AuthForm from "./components/AuthForm.tsx";
-import TicketView from "./components/TicketView.tsx";
+import Navbar from "./components/Common/Navbar.tsx";
+import FavoritePage from "./pages/FavoritePage.tsx";
+import EditProfile from "./components/Profile/EditProfile.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainPage />,
+    element: (<><Navbar /><BannerSlider /></>),
     errorElement: <NotFoundPage />
   },
   {
-    path: "/admin",
-    element:
-    <ProtectedRoute requiredRoleId={3}>
-      <AdminPage/>
-    </ProtectedRoute>,
-  },
-  {
-    path: "/buy_tickets",
-    element:
-        <ProtectedRoute requiredRoleId={4}>
-          <TicketBooking/>
-        </ProtectedRoute>,
-  },
-  {
-    path: "/tickets",
-    element:
-        <ProtectedRoute requiredRoleId={4}>
-          <TicketView/>
-        </ProtectedRoute>,
-  },
-  {
-    path: "/admin/login",
-    element: <AdminAuthForm/>,
-  },
-  {
-    path: "/login",
-    element: <AuthForm/>,
-  },
-  {
-    path: "/profile/:userId",
-    element: <ProfilePage />,
-    errorElement: <NotFoundPage />
-  },
-  {
-    path: "/profile/editProfile",
-    element: <EditProfile />,
-    errorElement: <NotFoundPage />
-  },
-  {
-    path: "/movie/:movieId",
-    element: <MoviePage />,
-    errorElement: <NotFoundPage />
-  },
-  {
-    path: "/catalog",
-    element: <CatalogPage />,
-    errorElement: <NotFoundPage />
+    path: "/",
+    element: <Layout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      // { path: "/profile/:userId", element: <ProfilePage /> },
+      { path: "/favorites", element: <FavoritePage /> },
+      { path: "/settings", element: <EditProfile /> },
+      { path: "/movie/:movieId", element: <MoviePage /> },
+    ]
   }
 ]);
 
 function App() {
   return (
     <>
-      <MovieProvider>
-        <RouterProvider router={router} />
-      </MovieProvider>
+      <RouterProvider router={router} />
     </>
 
   );
 }
 
-
-export default App
+export default App;

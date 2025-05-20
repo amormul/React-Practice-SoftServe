@@ -22,7 +22,7 @@ function TitleLink({title, description, href}: TitleSectionProps) {
       >
         <Stack direction="row" alignItems="center">
           <Typography
-            variant="inherit"
+            color="secondary"
             sx={{
               fontWeight: "bold",
               fontSize: {xs: "1.5rem", sm: "2rem"}

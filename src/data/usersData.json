@@ -1,0 +1,69 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "JohnDoe",
+      "password": "qwerty",
+      "email": "johndoe@example.com",
+      "avatarUrl": "/src/assets/avatar.jpg",
+      "bio": "Software developer with a passion for open-source projects.",
+      "dateJoined": "2023-01-15",
+      "favoriteFilms": [
+        {
+          "title": "Початок",
+          "posterUrl": "https://image.tmdb.org/t/p/original/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg"
+        },
+        {
+          "title": "Матриця",
+          "posterUrl": "https://image.tmdb.org/t/p/original/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"
+        }
+      ],
+      "comments": [
+        {
+          "film": "Inception",
+          "comment": "A mind-bending masterpiece!"
+        },
+        {
+          "film": "The Matrix",
+          "comment": "A revolutionary sci-fi classic."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "username": "JaneSmith",
+      "password": "qwerty",
+      "email": "janesmith@example.com",
+      "avatarUrl": "/src/assets/avatar.jpg",
+      "bio": "Graphic designer and digital artist.",
+      "dateJoined": "2022-11-20"
+    },
+    {
+      "id": 3,
+      "username": "MikeJohnson",
+      "password": "qwerty",
+      "email": "mikejohnson@example.com",
+      "avatarUrl": "/src/assets/avatars/mikejohnson.jpg",
+      "bio": "Tech enthusiast and blogger.",
+      "dateJoined": "2021-05-10"
+    },
+    {
+      "id": 4,
+      "username": "EmilyDavis",
+      "password": "qwerty",
+      "email": "emilydavis@example.com",
+      "avatarUrl": "/src/assets/avatars/emilydavis.jpg",
+      "bio": "Full-stack developer and coffee lover.",
+      "dateJoined": "2020-08-25"
+    },
+    {
+      "id": 5,
+      "username": "ChrisBrown",
+      "password": "qwerty",
+      "email": "chrisbrown@example.com",
+      "avatarUrl": "/src/assets/avatars/chrisbrown.jpg",
+      "bio": "Cybersecurity expert and avid gamer.",
+      "dateJoined": "2019-03-30"
+    }
+  ]
+}
