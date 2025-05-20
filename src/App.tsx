@@ -1,3 +1,4 @@
+
 import NotFoundPage from './pages/NotFound.tsx';
 import ProfilePage from "./pages/ProfilePage.tsx"
 import MoviePage from "./pages/MoviePage.tsx"
@@ -35,6 +36,7 @@ function App() {
     <>
       <RouterProvider router={router} />
     </>
+
   );
 }
 
