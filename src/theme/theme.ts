@@ -32,7 +32,7 @@ const darkRedTheme = createTheme({
     button: {
       fontFamily: "'Poppins', sans-serif",
       fontWeight: 600,
-      textTransform: "capitalize",
+      textTransform: "none",
     },
   },
   components: {
