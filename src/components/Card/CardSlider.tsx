@@ -2,7 +2,7 @@ import Slider from "react-slick";
 import React from "react";
 
 interface CardSliderProps {
-  items: Array<{ id: number; title: string; description: string }>;
+  items: { id: number; title: string; imageUrl: string, description?: string }[];
   CardComponent: React.ComponentType<any>;
   NoItemsComponent?: React.ComponentType;
 }

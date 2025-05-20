@@ -1,30 +1,27 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Avatar, Button, ButtonGroup, Stack, TextField, Typography} from "@mui/material";
+import {UserContext} from "../../context/AuthProvider.tsx";
 
 function EditProfile() {
   const [isEditing, setIsEditing] = useState(false);
+  const {user, updateUser} = useContext(UserContext);
   const [profileData, setProfileData] = useState({
     name: "",
-    email: "johndoe@example.com",
+    email: "",
     bio: "",
     avatar: "",
   });
 
   useEffect(() => {
-    // Simulate fetching data from profileData.json
-    const fetchData = async () => {
-      const response = await fetch('/src/data/profileData.json');
-      const data = await response.json();
+    if (user) {
       setProfileData({
-        name: data.user.username,
-        email: "user@example.com", // Replace with actual email if available
-        bio: data.user.bio,
-        avatar: data.user.avatarUrl,
+        name: user.username,
+        email: user.email,
+        bio: user.bio || "",
+        avatar: user.avatarUrl || "",
       });
-    };
-
-    fetchData();
-  }, []);
+    }
+  }, [user]);
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -47,7 +44,7 @@ function EditProfile() {
   };
 
   const handleSave = () => {
-    // Add save logic here (e.g., API call)
+    updateUser?.(profileData);
     setIsEditing(false);
   };
 

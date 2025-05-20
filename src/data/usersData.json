@@ -10,12 +10,12 @@
       "dateJoined": "2023-01-15",
       "favoriteFilms": [
         {
-          "title": "Inception",
-          "posterUrl": ""
+          "title": "Початок",
+          "posterUrl": "https://image.tmdb.org/t/p/original/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg"
         },
         {
-          "title": "The Matrix",
-          "posterUrl": ""
+          "title": "Матриця",
+          "posterUrl": "https://image.tmdb.org/t/p/original/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"
         }
       ],
       "comments": [

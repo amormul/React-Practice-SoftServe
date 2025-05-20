@@ -2,41 +2,16 @@ import {Box, Button, Chip, Stack, Typography} from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Slider from 'react-slick';
-import React, {SetStateAction, useEffect, useState} from "react";
-import {Link} from 'react-router-dom';
-
-const movies = [
-  {
-    title: 'Avatar: The Way of Water',
-    genres: ['Action', 'Adventure', 'Sci-Fi'],
-    release: '2022',
-    duration: '3h 12m',
-    rating: '8.5',
-    description: 'More than a decade after the events of the first film, the Sully family faces new challenges. Decade after the events of the first film',
-    image: 'https://image.tmdb.org/t/p/original/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg'
-  },
-  {
-    title: 'A Minecraft Movie',
-    genres: ['Action', 'Comedy', 'Adventure'],
-    release: '2025',
-    duration: '1h 41m',
-    rating: '5.9',
-    description: 'Four misfits are pulled into a cubic world and must master its rules to return home.',
-    image: 'https://www.forbes.com.au/wp-content/uploads/2025/04/0x0.jpg-72.webp'
-  },
-  {
-    title: 'Dune: Part Two',
-    genres: ['Sci-Fi', 'Adventure'],
-    release: '2024',
-    duration: '2h 46m',
-    rating: '8.7',
-    description: 'Paul Atreides unites with the Fremen and seeks revenge against enemies.',
-    image: 'https://image.tmdb.org/t/p/original/czembW0Rk1Ke7lCJGahbOhdCuhV.jpg'
-  }
-];
+import React, {useContext, useEffect, useState} from "react";
+import {Link, useNavigate} from 'react-router-dom';
+import {MovieContext} from '../../context/MovieProvider';
+import {truncateText} from "../../utils.ts";
+import FavoriteButton from "../FavoriteButton.tsx";
 
 const BannerSlider = () => {
-  const [activeSlide, setActiveSlide] = useState(-1);
+  const {movies} = useContext(MovieContext) || {movies: []};
+  const [activeSlide, setActiveSlide] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setActiveSlide(0);
@@ -52,7 +27,7 @@ const BannerSlider = () => {
     fade: true,
     arrows: false,
     pauseOnHover: false,
-    beforeChange: (_current: never, next: SetStateAction<number>) => setActiveSlide(next),
+    beforeChange: (_current: never, next: number) => setActiveSlide(() => next),
     customPaging: (i: number) => (
       <div
         style={{
@@ -88,6 +63,9 @@ const BannerSlider = () => {
           sx={{
             position: 'relative',
             height: '100vh',
+            textDecoration: 'none',
+            color: 'inherit',
+            cursor: 'pointer',
           }}
         >
           {/* Film Details */}
@@ -95,10 +73,9 @@ const BannerSlider = () => {
             sx={{
               position: 'absolute',
               width: {xs: '100%', md: '80%', lg: '55%'},
-              left: 0,
-              bottom: {xs: '10%', sm: 30, md: 10},
-              zIndex: 10,
+              bottom: {xs: '8%', sm: 30, md: 10},
               padding: {xs: 2, sm: 5, md: 6, lg: 10},
+              zIndex: 10,
             }}
           >
             <Typography
@@ -117,9 +94,7 @@ const BannerSlider = () => {
                   key={i}
                   label={genre}
                   sx={{
-                    backgroundColor: '#fff',
                     opacity: 0.9,
-                    color: '#000',
                     fontWeight: 'bold'
                   }}
                 />
@@ -128,12 +103,12 @@ const BannerSlider = () => {
 
             <Stack direction="row" spacing={{xs: 0.6, md: 1}} alignItems="center" mb={2}>
               <CalendarMonthIcon fontSize="small"/>
-              <Typography>{movie.release}</Typography>
+              <Typography>{movie.releaseDate}</Typography>
               <span>•</span>
               <AccessTimeIcon fontSize="small"/>
               <Typography>{movie.duration}</Typography>
               <span>•</span>
-              <Typography>IMDb {movie.rating}</Typography>
+              <Typography>IMDb {movie.IMDbRating}</Typography>
             </Stack>
 
             <Typography
@@ -143,14 +118,14 @@ const BannerSlider = () => {
               textAlign="left"
               paddingBottom={2}
             >
-              {movie.description}
+              {truncateText(movie.description, 200)}
             </Typography>
 
             <Stack direction="row" spacing={2}>
               <Button
                 component={Link}
                 to={`/sessions?film=${encodeURIComponent(movie.title)}`}
-                sx={{fontSize: {xs: '0.97rem', sm: '1.2rem', md: '1.5rem'}}}
+                sx={{fontSize: {xs: '1.2rem', sm: '1.4rem', md: '1.6rem'}}}
                 variant="contained"
                 size="large"
                 color="primary"
@@ -158,33 +133,22 @@ const BannerSlider = () => {
               >
                 Обрати сеанс
               </Button>
-              <Button
-                href="#"
-                variant="outlined"
-                sx={{
-                  color: 'white',
-                  borderColor: 'red',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    borderColor: 'white'
-                  }
-                }}
-              >
-                В обраних
-              </Button>
+              <FavoriteButton
+                title={movie.title}
+                posterUrl={movie.posterUrl}
+              />
             </Stack>
           </Box>
 
           {/* Background Image */}
           <Box
             key={index}
+            onClick={() => navigate(`/movie/${movie.title}`)}
             sx={{
-              height: '100%',
-              backgroundImage: `linear-gradient(to top, rgba(23,23,23,9) 10%, rgba(23,23,23,0.35) 40%, rgba(23,23,23,0) 70%), url(${movie.image})`,
+              height: '100vh',
+              backgroundImage: `linear-gradient(to top, rgba(23,23,23,9) 10%, rgba(23,23,23,0.35) 40%, rgba(23,23,23,0) 70%), url(${movie.posterUrl})`,
               backgroundSize: 'cover',
               backgroundPosition: '50% 10%',
-              position: 'relative',
-              color: '#fff',
               transition: activeSlide === index ? 'transform 10s ease-in-out' : 'none',
               transform: activeSlide === index ? 'scale(1.1)' : 'scale(1)',
             }}

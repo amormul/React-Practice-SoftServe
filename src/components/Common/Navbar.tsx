@@ -12,36 +12,34 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import SearchPopover from "./SearchPopover.tsx";
 import SearchDrawer from "./SearchDrawer.tsx";
-import {Dialog, Drawer} from '@mui/material';
+import {Drawer} from '@mui/material';
 import {Favorite, HomeFilled, LocalMovies, Logout, Schedule, Settings, SupervisedUserCircle} from '@mui/icons-material';
 import {Link, useLocation} from "react-router-dom";
-import AuthForm from "../AuthForm.tsx";
+import {useContext} from "react";
+import {UserContext} from "../../context/AuthProvider.tsx";
+import {useAuthDialog} from "../../context/AuthDialogContext.tsx";
 
 const pages = [
   {name: 'Головна', icon: <HomeFilled/>, path: '/'},
   {name: 'Фільми', icon: <LocalMovies/>, path: '/movies'},
   {name: 'Сеанси', icon: <Schedule/>, path: '/sessions'},
-  {name: 'Обрані', icon: <Favorite/>, path: '/favorites'}
 ];
 
 const settings = [
   {name: 'Мій профіль', icon: <SupervisedUserCircle/>, path: '/profile'},
   {name: 'Мої квитки', icon: <LocalMovies/>, path: '/tickets'},
-  {name: 'Налаштування', icon: <Settings/>, path: '/settings'},
-  {name: 'Вийти', icon: <Logout/>, path: '/logout'}
+  {name: 'Обрані', icon: <Favorite/>, path: '/favorites'},
+  {name: 'Налаштування', icon: <Settings/>, path: '/settings'}
 ];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const {user, isLoggedIn, logout} = useContext(UserContext);
+  const { openAuthDialog } = useAuthDialog();
   const location = useLocation();
-  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
-  const isLoggedIn = false;
 
   const isActive = (path: string) => location.pathname === path;
-
-  const handleLoginOpen = () => setIsLoginOpen(true);
-  const handleLoginClose = () => setIsLoginOpen(false);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -60,11 +58,15 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar sx={{backgroundColor: 'rgba(0,0,0,0.9)'}}>
+    <AppBar sx={{backgroundColor: 'rgba(0,0,0,0.65)'}}>
       <Container maxWidth="lg" sx={{paddingX: {xs: 1, sm: '16px'}}}>
         <Toolbar disableGutters>
           {/* Desktop Logo */}
-          <Box sx={{display: {xs: 'none', md: 'flex'}, backgroundColor: '#FF0000', borderRadius: 2}}>
+          <Box
+            sx={{display: {xs: 'none', md: 'flex'}, backgroundColor: '#FF0000', borderRadius: 2}}
+            component={Link}
+            to="/"
+          >
             <img src="/logo.svg" alt="Logo" style={{height: '50px'}}/>
           </Box>
 
@@ -107,7 +109,7 @@ function ResponsiveAppBar() {
 
           {/* Mobile Logo */}
           <Box sx={{flexGrow: {xs: 1, sm: 0}, display: {xs: 'flex', md: 'none'}}}>
-            <Box sx={{backgroundColor: '#FF0000', borderRadius: 2, display: 'flex'}}>
+            <Box sx={{backgroundColor: '#FF0000', borderRadius: 2, display: 'flex'}} component={Link} to="/">
               <img src="/logo.svg" alt="Logo" style={{height: '40px', display: 'block'}}/>
             </Box>
           </Box>
@@ -138,8 +140,9 @@ function ResponsiveAppBar() {
           <SearchPopover/>
 
           {/* Profile or Login/Registration */}
-          {isLoggedIn ? (
+          {isLoggedIn() ? (
             <Button
+              size="large"
               aria-controls="menu-profile"
               sx={{
                 backgroundColor: anchorElUser ? '#2e2e2e' : undefined,
@@ -148,16 +151,16 @@ function ResponsiveAppBar() {
               }}
               onClick={handleOpenUserMenu}
             >
-              <Avatar alt="Username" src="/static/images/avatar/2.jpg"/>
-              <Typography sx={{ml: 1, display: {xs: 'none', sm: 'block'}}}>
-                Username
+              <Avatar alt={user?.username} src={user?.avatarUrl}/>
+              <Typography color="secondary" sx={{ml: 1, display: {xs: 'none', sm: 'block'}}}>
+                {user?.username}
               </Typography>
             </Button>
           ) : (
             <Button
               variant="contained"
               color="primary"
-              onClick={handleLoginOpen}
+              onClick={openAuthDialog}
             >
               Увійти
             </Button>
@@ -181,21 +184,19 @@ function ResponsiveAppBar() {
                 <Typography ml={1}>{setting.name}</Typography>
               </MenuItem>
             ))}
+            {/* Logout */}
+            <MenuItem
+              onClick={() => { logout(); handleCloseUserMenu(); }}
+              sx={{
+                backgroundColor: "red"
+              }}
+            >
+              <Logout />
+              <Typography ml={1}>Вийти</Typography>
+            </MenuItem>
           </Menu>
         </Toolbar>
       </Container>
-
-      {/* Login Dialog */}
-      <Dialog
-        open={isLoginOpen}
-        onClose={handleLoginClose}
-        maxWidth="xs"
-        slotProps={{
-          paper: {sx: {margin: 1}}
-        }}
-      >
-        <AuthForm/>
-      </Dialog>
     </AppBar>
   );
 }

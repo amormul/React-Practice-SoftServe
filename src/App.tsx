@@ -1,52 +1,41 @@
 import NotFoundPage from './pages/NotFound.tsx';
-import MainPage from "./pages/MainPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx"
 import MoviePage from "./pages/MoviePage.tsx"
-import MovieProvider from "./context/MovieProvider.tsx"
-import EditProfile from "./components/Profile/EditProfile.tsx";
-import { ThemeProvider } from '@emotion/react';
-import {CssBaseline} from "@mui/material";
+import Layout from './pages/Layout.tsx';
+import BannerSlider from "./components/Common/BannerSlider.tsx";
 import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom';
-import darkTheme from './theme/theme.ts';
+import Navbar from "./components/Common/Navbar.tsx";
+import FavoritePage from "./pages/FavoritePage.tsx";
+import EditProfile from "./components/Profile/EditProfile.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainPage />,
+    element: (<><Navbar/><BannerSlider/></>),
     errorElement: <NotFoundPage />
   },
   {
-    path: "/profile/:userId",
-    element: <ProfilePage />,
-    errorElement: <NotFoundPage />
-  },
-  {
-    path: "/profile/editProfile",
-    element: <EditProfile />,
-    errorElement: <NotFoundPage />
-  },
-  {
-    path: "/movie/:movieId",
-    element: <MoviePage />,
-    errorElement: <NotFoundPage />
+    path: "/",
+    element: <Layout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      // { path: "/profile/:userId", element: <ProfilePage /> },
+      {path: "/favorites", element: <FavoritePage/>},
+      {path: "/settings", element: <EditProfile/>},
+      {path: "/movie/:movieId", element: <MoviePage/>},
+    ]
   }
 ]);
 
 function App() {
   return (
     <>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline/>
-        <MovieProvider>
-          <RouterProvider router={router} />
-        </MovieProvider>
-      </ThemeProvider>
+      <RouterProvider router={router} />
     </>
   );
 }
 
-
-export default App
+export default App;

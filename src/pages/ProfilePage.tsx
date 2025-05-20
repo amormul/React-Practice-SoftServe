@@ -3,7 +3,7 @@ import CardSlider from "../components/Card/CardSlider.tsx";
 import MediaCard from "../components/Card/MediaCard.tsx";
 import ReviewCard from "../components/Card/ReviewCard.tsx";
 import TitleSection from "../components/Common/TitleSection.tsx";
-import profileDataJson from "../data/profileData.json";
+import profileDataJson from "../data/usersData.json";
 import {useEffect, useState} from "react";
 import UserHeader from "../components/Profile/UserHeader.tsx";
 

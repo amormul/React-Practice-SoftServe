@@ -1,5 +1,7 @@
-import React, {ChangeEvent, FormEvent, useState} from "react";
-import {Box, Button, Paper, Tab, Tabs, TextField} from "@mui/material";
+import React, {ChangeEvent, FormEvent, useContext, useState} from "react";
+import {Alert, Box, Button, Dialog, Tab, Tabs, TextField} from "@mui/material";
+import {UserContext} from "../context/AuthProvider";
+import {useSnackbar} from "../context/SnackbarProvider.tsx";
 
 interface FormData {
   name: string;
@@ -7,37 +9,58 @@ interface FormData {
   password: string;
 }
 
+interface AuthDialogProps {
+  open: boolean;
+  onClose: () => void;
+}
+
 type AuthMode = "login" | "register";
 
-const AuthForm: React.FC = () => {
+const AuthDialog: React.FC<AuthDialogProps> = ({open, onClose}) => {
   const [mode, setMode] = useState<AuthMode>("login");
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState<FormData>({name: "", email: "", password: ""});
+  const [error, setError] = useState<string | null>(null);
+  const {login, register} = useContext(UserContext);
+  const {showSnackbar} = useSnackbar();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({...prev, [e.target.name]: e.target.value}));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (mode === "login") {
-      console.log("Logging in with", formData);
-    } else {
-      console.log("Registering with", formData);
+    setError(null);
+
+    try {
+      if (mode === "login") {
+        await login(formData.email, formData.password);
+        showSnackbar("Ви успішно увійшли!", "success");
+
+      } else if (mode === "register") {
+        await register(formData.name, formData.email, formData.password);
+        showSnackbar("Реєстрація пройшла успішно!", "success");
+      }
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
     }
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: AuthMode) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: AuthMode) => {
     setMode(newValue);
-    console.log(event);
     setFormData({name: "", email: "", password: ""});
+    setError(null);
   };
 
   return (
-    <Paper>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="xs"
+      slotProps={{
+        paper: {sx: {margin: 1}}
+      }}
+    >
       <Tabs value={mode} onChange={handleTabChange} centered sx={{
         "& .MuiTabs-indicator": {backgroundColor: "#FF0000"},
       }}>
@@ -48,7 +71,7 @@ const AuthForm: React.FC = () => {
         }}/>
         <Tab label="Регістрація" value="register" sx={{
           "&.Mui-selected": {
-            color: "#FF0000", // color of selected tab text
+            color: "#FF0000",
           },
         }}/>
       </Tabs>
@@ -68,6 +91,7 @@ const AuthForm: React.FC = () => {
             }}
           />
         )}
+        {error && <Alert variant="filled" severity="error">{error}</Alert>}
         <TextField
           fullWidth
           margin="normal"
@@ -105,8 +129,8 @@ const AuthForm: React.FC = () => {
           {mode === "login" ? "Увійти" : "Зареєструватися"}
         </Button>
       </Box>
-    </Paper>
+    </Dialog>
   );
 };
 
-export default AuthForm;
+export default AuthDialog;

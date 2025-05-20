@@ -1,32 +1,35 @@
-import {Card, CardContent, CardMedia, Stack, Typography} from "@mui/material";
+import {Card, CardContent, CardMedia, Stack, Typography, Box} from "@mui/material";
 import {StarOutlined} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
-import { truncateText } from "../../utils";
+import {truncateText} from "../../utils";
+import {ReactNode} from "react";
 
 interface MediaCardProps {
   id: number;
   title: string;
-  imageSrc: string;
+  imageUrl: string;
+  path?: string;
   description?: string;
   rating?: number;
+  IconComponent?: ReactNode;
 }
 
 function MediaCard({...props}: MediaCardProps) {
-  const {id, title, imageSrc, description, rating} = props;
-  const navigate = useNavigate()
+  const {title, imageUrl, description, rating, path, IconComponent} = props;
+  const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/film/${id}/details`);
+    if (path) navigate(path);
   };
 
   return (
     <Card
       sx={{
-        // width: "200px",
-        maxHeight: "400px",
+        maxHeight: "430px",
         borderRadius: "5px",
         transition: "transform 0.3s",
         cursor: "pointer",
+        position: "relative",
         "&:hover": {
           transform: "scale(1.01)",
           border: "1px solid rgba(255, 0, 0, 0.8)",
@@ -34,15 +37,29 @@ function MediaCard({...props}: MediaCardProps) {
       }}
       onClick={handleCardClick}
     >
+      {/* Icon Button in the top-right corner */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          zIndex: 100,
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {IconComponent}
+      </Box>
+
       <CardMedia
         component="img"
-        image={imageSrc}
+        image={imageUrl}
         alt={title}
+        sx={{maxHeight: {xs: "320px"}}}
       />
       <CardContent>
         {rating && (
           <Stack direction="row" alignItems="center" spacing={0.5}>
-            <StarOutlined fontSize="small" color="warning"/>
+            <StarOutlined fontSize="small" color="warning" />
             <Typography variant="body2">{rating}</Typography>
           </Stack>
         )}

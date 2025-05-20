@@ -1,12 +1,30 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
 import 'slick-carousel/slick/slick.css';
 import "slick-carousel/slick/slick-theme.css";
 import "./slider.css";
 import App from "./App.tsx";
+import darkTheme from "./theme/theme.ts";
+import {CssBaseline} from "@mui/material";
+import AuthProvider from "./context/AuthProvider.tsx";
+import MovieProvider from "./context/MovieProvider.tsx";
+import {ThemeProvider} from "@emotion/react";
+import {SnackbarProvider} from "./context/SnackbarProvider.tsx";
+import {AuthDialogProvider} from "./context/AuthDialogContext.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline/>
+      <AuthProvider>
+        <SnackbarProvider>
+          <AuthDialogProvider>
+            <MovieProvider>
+              <App/>
+            </MovieProvider>
+          </AuthDialogProvider>
+        </SnackbarProvider>
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>
 );
