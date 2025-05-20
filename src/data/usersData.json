@@ -7,7 +7,27 @@
       "email": "johndoe@example.com",
       "avatarUrl": "/src/assets/avatar.jpg",
       "bio": "Software developer with a passion for open-source projects.",
-      "dateJoined": "2023-01-15"
+      "dateJoined": "2023-01-15",
+      "favoriteFilms": [
+        {
+          "title": "Inception",
+          "posterUrl": ""
+        },
+        {
+          "title": "The Matrix",
+          "posterUrl": ""
+        }
+      ],
+      "comments": [
+        {
+          "film": "Inception",
+          "comment": "A mind-bending masterpiece!"
+        },
+        {
+          "film": "The Matrix",
+          "comment": "A revolutionary sci-fi classic."
+        }
+      ]
     },
     {
       "id": 2,
