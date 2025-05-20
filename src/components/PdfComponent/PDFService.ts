@@ -1,6 +1,5 @@
-import type {Ticket} from "../model/Ticket"
-import type {Hall} from "../model/Hall"
-import type {Session} from "../model/MovieSession"
+import type {Ticket} from "./Ticket.ts"
+
 import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "pdfmake/build/vfs_fonts"
 
@@ -9,15 +8,7 @@ pdfMake.vfs = pdfFonts.vfs
 export class PDFService {
     static async generateQRCode(ticket: Ticket): Promise<string> {
         const QRCode = (await import("qrcode")).default
-        const ticketData = JSON.stringify({
-            id: ticket.id,
-            userId: ticket.userId,
-            hallId: ticket.hallId,
-            sessionId: ticket.sessionId,
-            row: ticket.row,
-            col: ticket.col,
-            purchaseDate: ticket.purchaseDate.toISOString(),
-        })
+        const ticketData = JSON.stringify(ticket)
         return QRCode.toDataURL(ticketData, {
             width: 200,
             margin: 5,
@@ -25,7 +16,7 @@ export class PDFService {
         });
     }
 
-    static async generateTicketPDF(ticket: Ticket, hall: Hall | undefined, session: Session | undefined): Promise<Blob> {
+    static async generateTicketPDF(ticket: Ticket): Promise<Blob> {
         const qrCodeDataUrl = await this.generateQRCode(ticket)
 
         const docDefinition: any = {
@@ -43,7 +34,7 @@ export class PDFService {
                     alignment: "center",
                 },
                 {
-                    text: session?.movieTitle || "Назва фільму недоступна",
+                    text: ticket.movie_title || "Назва фільму недоступна",
                     style: "movieTitle",
                     alignment: "center",
                     margin: [0, 10]
@@ -56,17 +47,16 @@ export class PDFService {
                             width: "*",
                             stack: [
                                 {text: "Деталі сеансу:", style: "sectionHeader"},
-                                {text: `Дата: ${session?.date || "Н/Д"}`},
-                                {text: `Час: ${session?.time || "Н/Д"}`},
-                                {text: `Зал: ${hall?.name || "Н/Д"}`},
+                                {text: `Дата і час: ${ticket.time || "Н/Д"}`},
+                                {text: `Зала: ${ticket.hall_id || "Н/Д"}`},
                             ],
                         },
                         {
                             width: "*",
                             stack: [
                                 {text: "Місце:", style: "sectionHeader"},
-                                {text: `Ряд: ${ticket.row + 1}`},
-                                {text: `Місце: ${ticket.col + 1}`},
+                                {text: `Ряд: ${ticket.row}`},
+                                {text: `Місце: ${ticket.col}`},
                             ],
                         },
                     ],
@@ -78,8 +68,10 @@ export class PDFService {
                 },
                 {
                     ul: [
-                        `Номер квитка: ${ticket.id.toString().slice(-8)}`,
-                        `Дата покупки: ${ticket.purchaseDate.toLocaleString()}`,
+                        `Номер квитка: ${ticket.ticket_id}`,
+                        `Власник квитка: ${ticket.username}`,
+                        `Дата покупки: ${ticket.buy_time.toLocaleString()}`,
+                        `Ціна: ${ticket.price}`,
                     ],
                 },
                 {
@@ -119,13 +111,13 @@ export class PDFService {
         })
     }
 
-    static async downloadTicketPDF(ticket: Ticket, hall: Hall | undefined, session: Session | undefined): Promise<void> {
-        const pdfBlob = await this.generateTicketPDF(ticket, hall, session)
+    static async downloadTicketPDF(ticket: Ticket): Promise<void> {
+        const pdfBlob = await this.generateTicketPDF(ticket)
         const url = URL.createObjectURL(pdfBlob)
 
         const link = document.createElement("a")
         link.href = url
-        link.download = `ticket-${ticket.id.toString().slice(-8)}.pdf`
+        link.download = `ticket-${ticket.ticket_id.toString().slice(-8)}.pdf`
         document.body.appendChild(link)
         link.click()
 
