@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Avatar, Button, ButtonGroup, Stack, TextField, Typography} from "@mui/material";
 import {UserContext} from "../../context/AuthProvider.tsx";
+import {useSnackbar} from "../../context/SnackbarProvider.tsx";
 
 function EditProfile() {
   const [isEditing, setIsEditing] = useState(false);
+  const {showSnackbar} = useSnackbar()
   const {user, updateUser} = useContext(UserContext);
   const [profileData, setProfileData] = useState({
     name: "",
@@ -44,84 +46,92 @@ function EditProfile() {
   };
 
   const handleSave = () => {
-    updateUser?.(profileData);
+    if (!user) return;
+    updateUser?.({
+      ...user,
+      username: profileData.name,
+      email: profileData.email,
+      bio: profileData.bio,
+      avatarUrl: profileData.avatar,
+    });
+    showSnackbar("Профіль успішно оновлено", "success");
     setIsEditing(false);
   };
 
   return (
-    <Stack spacing={3} maxWidth="30%">
-      <Stack direction="row" spacing={2}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Personal Information
-        </Typography>
-      </Stack>
-      <Stack spacing={2} direction="row" alignItems="center">
-        <Avatar
-          src={profileData.avatar}
-          alt="Avatar"
-          sx={{width: 130, height: 130}}
-        />
-        <Stack spacing={1}>
-          {isEditing && (
-            <>
-              <Typography variant="caption" textAlign="left">Upload an image in JPG or PNG format with a max size of
-                25MB.</Typography>
-              <Button variant="outlined" component="label" size="small">
-                Upload Image
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={handleAvatarChange}
-                />
+    <>
+      <Typography variant="h4" component="h2" gutterBottom>
+        Налаштування
+      </Typography>
+      <Stack spacing={3} alignItems="center" justifyContent="center" mx="auto">
+        <Stack spacing={2} direction="row" alignItems="center">
+          <Avatar
+            src={profileData.avatar}
+            alt="Avatar"
+            sx={{width: 130, height: 130}}
+          />
+          <Stack spacing={1}>
+            {isEditing && (
+              <>
+                <Typography variant="caption" textAlign="left">Upload an image in JPG or PNG format with a max size of
+                  25MB.</Typography>
+                <Button variant="outlined" component="label" size="small">
+                  Upload Image
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={handleAvatarChange}
+                  />
+                </Button>
+              </>
+            )}
+          </Stack>
+        </Stack>
+        <Stack spacing={2} width="100%">
+          <TextField
+            label="Name"
+            name="name"
+            value={profileData.name}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            fullWidth
+          />
+          <TextField
+            label="Email"
+            name="email"
+            value={profileData.email}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            fullWidth
+          />
+          <TextField
+            label="Bio"
+            name="bio"
+            value={profileData.bio}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            multiline
+            rows={4}
+            fullWidth
+          />
+          {isEditing ? (
+            <ButtonGroup>
+              <Button variant="contained" color="primary" onClick={handleSave}>
+                Save
               </Button>
-            </>
+              <Button variant="outlined" onClick={handleEditToggle}>
+                Cancel
+              </Button>
+            </ButtonGroup>
+          ) : (
+            <Button variant="contained" onClick={handleEditToggle}>
+              Edit
+            </Button>
           )}
         </Stack>
       </Stack>
-      <Stack spacing={2} width="100%">
-        <TextField
-          label="Name"
-          name="name"
-          value={profileData.name}
-          onChange={handleInputChange}
-          disabled={!isEditing}
-          fullWidth
-        />
-        <TextField
-          label="Email"
-          name="email"
-          value={profileData.email}
-          onChange={handleInputChange}
-          disabled={!isEditing}
-          fullWidth
-        />
-        <TextField
-          label="Bio"
-          name="bio"
-          value={profileData.bio}
-          onChange={handleInputChange}
-          disabled={!isEditing}
-          multiline
-          rows={4}
-          fullWidth
-        />
-        {isEditing ? (
-          <ButtonGroup>
-            <Button variant="contained" color="primary" onClick={handleSave}>
-              Save
-            </Button>
-            <Button variant="outlined" onClick={handleEditToggle}>
-              Cancel
-            </Button>
-          </ButtonGroup>
-        ) : (
-          <Button variant="contained" onClick={handleEditToggle}>
-            Edit
-          </Button>
-        )}
-      </Stack>
-    </Stack>
+    </>
   );
 }
 

@@ -1,4 +1,3 @@
-
 import NotFoundPage from './pages/NotFound.tsx';
 import ProfilePage from "./pages/ProfilePage.tsx"
 import MoviePage from "./pages/MoviePage.tsx"
@@ -11,11 +10,12 @@ import {
 import Navbar from "./components/Common/Navbar.tsx";
 import FavoritePage from "./pages/FavoritePage.tsx";
 import EditProfile from "./components/Profile/EditProfile.tsx";
+import MoviesPage from "./pages/MoviesPages.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (<><Navbar /><BannerSlider /></>),
+    element: (<><Navbar/><BannerSlider/></>),
     errorElement: <NotFoundPage />
   },
   {
@@ -23,10 +23,11 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <NotFoundPage />,
     children: [
-      // { path: "/profile/:userId", element: <ProfilePage /> },
-      { path: "/favorites", element: <FavoritePage /> },
-      { path: "/settings", element: <EditProfile /> },
-      { path: "/movie/:movieId", element: <MoviePage /> },
+      {path: "/profile", element: <ProfilePage /> },
+      {path: "/favorites", element: <FavoritePage/>},
+      {path: "/settings", element: <EditProfile/>},
+      {path: "/movies", element: <MoviesPage/>},
+      {path: "/movie/:movieId", element: <MoviePage/>},
     ]
   }
 ]);
@@ -36,7 +37,6 @@ function App() {
     <>
       <RouterProvider router={router} />
     </>
-
   );
 }
 

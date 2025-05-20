@@ -3,14 +3,14 @@ import IconButton from "@mui/material/IconButton";
 import {useContext} from "react";
 import {UserContext} from "../context/AuthProvider.tsx";
 import {useSnackbar} from "../context/SnackbarProvider.tsx";
-import { useAuthDialog } from "../context/AuthDialogContext.tsx";
+import {useAuthDialog} from "../context/AuthDialogContext.tsx";
 
 interface FavoriteButtonProps {
   title: string;
   posterUrl: string;
 }
 
-const FavoriteButton: React.FC<FavoriteButtonProps> = ({ title, posterUrl }) => {
+const FavoriteButton: React.FC<FavoriteButtonProps> = ({title, posterUrl}) => {
   const {isLoggedIn, isFilmInFavorites, addFavoriteFilm, removeFavoriteFilm} = useContext(UserContext);
   const {showSnackbar} = useSnackbar();
   const {openAuthDialog} = useAuthDialog();

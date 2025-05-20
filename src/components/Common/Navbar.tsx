@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useContext} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,8 +15,7 @@ import SearchPopover from "./SearchPopover.tsx";
 import SearchDrawer from "./SearchDrawer.tsx";
 import {Drawer} from '@mui/material';
 import {Favorite, HomeFilled, LocalMovies, Logout, Schedule, Settings, SupervisedUserCircle} from '@mui/icons-material';
-import {Link, useLocation} from "react-router-dom";
-import {useContext} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {UserContext} from "../../context/AuthProvider.tsx";
 import {useAuthDialog} from "../../context/AuthDialogContext.tsx";
 
@@ -26,9 +26,8 @@ const pages = [
 ];
 
 const settings = [
-  {name: 'Мій профіль', icon: <SupervisedUserCircle/>, path: '/profile'},
-  {name: 'Мої квитки', icon: <LocalMovies/>, path: '/tickets'},
-  {name: 'Обрані', icon: <Favorite/>, path: '/favorites'},
+  // {name: 'Мої квитки', icon: <LocalMovies/>, path: '/tickets'},
+  {name: 'Мої Обрані', icon: <Favorite/>, path: '/favorites'},
   {name: 'Налаштування', icon: <Settings/>, path: '/settings'}
 ];
 
@@ -36,7 +35,8 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const {user, isLoggedIn, logout} = useContext(UserContext);
-  const { openAuthDialog } = useAuthDialog();
+  const navigate = useNavigate();
+  const {openAuthDialog} = useAuthDialog();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -186,12 +186,16 @@ function ResponsiveAppBar() {
             ))}
             {/* Logout */}
             <MenuItem
-              onClick={() => { logout(); handleCloseUserMenu(); }}
+              onClick={() => {
+                logout();
+                navigate('/');
+                handleCloseUserMenu();
+              }}
               sx={{
                 backgroundColor: "red"
               }}
             >
-              <Logout />
+              <Logout/>
               <Typography ml={1}>Вийти</Typography>
             </MenuItem>
           </Menu>
