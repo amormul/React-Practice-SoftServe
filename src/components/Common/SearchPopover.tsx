@@ -1,42 +1,36 @@
 import {Avatar, Box, InputBase, List, ListItem, ListItemAvatar, ListItemText, Popover} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import * as React from "react";
-import {useRef, useState} from "react";
-import {Google} from "@mui/icons-material";
+import {useContext, useRef, useState} from "react";
+import FavoriteButton from "../FavoriteButton.tsx";
+import {MovieContext} from "../../context/MovieProvider.tsx";
 
 interface Film {
   id: number;
   title: string;
+  posterUrl: string;
   releaseDate: string;
 }
 
 function SearchPopover() {
   const boxRef = useRef<HTMLElement | null>(null);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [query, setQuery] = useState<string>('')
-  const [films, setFilms] = useState<Film[]>([
-    {id: 1, title: 'Inception', releaseDate: '2010'},
-    {id: 2, title: 'Interstellar', releaseDate: '2014'},
-    {id: 3, title: 'Dunkirk', releaseDate: '2017'},
-  ]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [filteredFilms, setFilteredFilms] = useState<Film[]>([]);
+  const {searchMovies} = useContext(MovieContext);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setQuery(value);
     if (value) {
+      setFilteredFilms(searchMovies(value));
       setAnchorEl(boxRef.current);
     } else {
+      setFilteredFilms([]);
       setAnchorEl(null);
     }
   };
 
-  const handleClick = () => {
-    setAnchorEl(boxRef.current)
-  }
-
   const handleClose = () => {
     setAnchorEl(null);
-    setQuery('');
   };
 
   const open = Boolean(anchorEl);
@@ -46,7 +40,6 @@ function SearchPopover() {
     <>
       <Box
         aria-describedby={id}
-        onClick={handleClick}
         ref={boxRef}
         sx={{
           flexGrow: 1,
@@ -95,14 +88,33 @@ function SearchPopover() {
         }}
       >
         <List sx={{width: '100%'}}>
-          {films.map((film) => (
-            <ListItem key={film.id}>
-              <ListItemAvatar>
-                <Avatar>
-                  <Google/>
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={film.title} secondary={film.releaseDate}/>
+          {filteredFilms.map((film) => (
+            <ListItem
+              key={film.id}
+              component="div"
+              sx={{textDecoration: 'none', color: 'inherit'}}
+              secondaryAction={<FavoriteButton title={film.title} posterUrl={film.posterUrl}/>}
+            >
+              <Box
+                component="a"
+                href={`/movie/${film.title}`}
+                sx={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', flex: 1}}
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    src={film.posterUrl}
+                    alt={film.title}
+                    variant="square"
+                    sx={{width: 50, height: 65}}
+                  />
+                </ListItemAvatar>
+                <Box sx={{ml: 2, flex: 1}}>
+                  <ListItemText
+                    primary={film.title}
+                    secondary={film.releaseDate}
+                  />
+                </Box>
+              </Box>
             </ListItem>
           ))}
         </List>
@@ -112,4 +124,3 @@ function SearchPopover() {
 }
 
 export default SearchPopover;
-

@@ -40,9 +40,10 @@ interface Movie {
 interface MovieContextType {
   movies: Movie[];
   setMovies: React.Dispatch<React.SetStateAction<Movie[]>>;
+  searchMovies: (query: string) => Movie[];
 }
 
-export const MovieContext = createContext<MovieContextType | undefined>(undefined);
+export const MovieContext = createContext<MovieContextType>({} as MovieContextType);
 
 interface MovieProviderProps {
   children: ReactNode;
@@ -64,12 +65,18 @@ const MovieProvider = ({ children }: MovieProviderProps) => {
         console.error('Error fetching movies:', error);
       }
     };
-
     fetchMovies();
   }, []);
 
+  const searchMovies = (query: string): Movie[] => {
+    if (!query) return [];
+    return movies.filter((movie) =>
+      movie.title.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
   return (
-    <MovieContext.Provider value={{ movies, setMovies }}>
+    <MovieContext.Provider value={{ movies, searchMovies, setMovies }}>
       {children}
     </MovieContext.Provider>
   );
