@@ -5,7 +5,7 @@ import {truncateText} from "../../utils";
 import {ReactNode} from "react";
 
 interface MediaCardProps {
-  id: number;
+  id?: number;
   title: string;
   imageUrl: string;
   path?: string;
@@ -26,6 +26,7 @@ function MediaCard({...props}: MediaCardProps) {
     <Card
       sx={{
         maxHeight: "430px",
+        maxWidth: "230px",
         borderRadius: "5px",
         transition: "transform 0.3s",
         cursor: "pointer",

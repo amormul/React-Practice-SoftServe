@@ -3,23 +3,14 @@ import CardSlider from "../components/Card/CardSlider.tsx";
 import MediaCard from "../components/Card/MediaCard.tsx";
 import ReviewCard from "../components/Card/ReviewCard.tsx";
 import TitleSection from "../components/Common/TitleSection.tsx";
-import profileDataJson from "../data/usersData.json";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import UserHeader from "../components/Profile/UserHeader.tsx";
+import {UserContext} from "../context/AuthProvider.tsx";
 
 
 const ProfilePage = () => {
-  const [profileData, setProfileData] = useState<any>(null)
+  const {user} = useContext(UserContext);
 
-  useEffect(() => {
-    setProfileData(profileDataJson);
-  }, []);
-
-  if (!profileData) {
-    return <div>Loading...</div>
-  }
-
-  const { user, ratings, watchlist, reviews } = profileData;
   const statistics = {
     ratings: ratings.length,
     watchlist: watchlist.length,
@@ -29,7 +20,7 @@ const ProfilePage = () => {
   return (
     <Stack spacing={5}>
       <UserHeader {...user} statistics={statistics} />
-      <TitleSection title="Ratings" description="My Ratings">
+      <TitleSection title="Мої" description="My Ratings">
         <CardSlider items={ratings} CardComponent={MediaCard} />
       </TitleSection>
       <TitleSection title="Watchlist" description="My Watchlist">

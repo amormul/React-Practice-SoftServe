@@ -8,7 +8,7 @@
       "releaseDate": "2010",
       "description": "Ми звикли, що в нашому розумінні злодій - це людина здатна вкрасти якісь цінності або гроші. Сюжет фантастичного бойовика «Початок» розповідає про злодіїв здатних вкрасти ідею прямо у людини з підсвідомості. Одним з таких є головний герой фільму Домінік Кобб. Після того як його дружина померла, він змушений ховатися, і не може навіть повернутися в країну, щоб побачити дітей. Якось раз Кобб отримує дуже неординарне замовлення: йому потрібно не вкрасти, а навпаки впровадити нову ідею в підсвідомість людини. Домініку не надто хотітися братися за цю справу, але замовник в обмін пропонує можливість повернутися додому. Заручившись підтримкою професіоналів цієї справи, Кобб починає розробляти план як все провернути. Все потрібно дуже добре продумати, адже злодіям доведеться відтворити багатошарову реальність в підсвідомості об'єкта, в результаті чого межі можуть почати стиратися.",
       "IMDbRating": 8.8,
-      "genres": ["Наукова фантастика", "Трилер"],
+      "genres": ["Наукова фантастика", "Екшн"],
       "duration": "148 хвилин",
       "language": "Англійська",
       "director": "Крістофер Нолан",
@@ -69,12 +69,12 @@
         {
           "id": 2,
           "title": "Інтерстеллар",
-          "posterUrl": "/src/assets/movies/interstellar.jpg"
+          "posterUrl": "https://www.themoviedb.org/t/p/w1280/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
         },
         {
           "id": 3,
-          "title": "Престиж",
-          "posterUrl": "/src/assets/movies/prestige.jpg"
+          "title": "Темний лицар",
+          "posterUrl": "https://www.themoviedb.org/t/p/w1280/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
         }
       ]
     },
@@ -94,12 +94,12 @@
         {
           "name": "Крістіан Бейл",
           "role": "Брюс Вейн / Бетмен",
-          "photoUrl": "/src/assets/actors/christian_bale.jpg"
+          "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Christian_Bale-7831.jpg"
         },
         {
           "name": "Гіт Леджер",
           "role": "Джокер",
-          "photoUrl": "/src/assets/actors/heath_ledger.jpg"
+          "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Heath_Ledger_%282%29.jpg"
         }
       ],
       "reviews": [],
@@ -108,7 +108,7 @@
     {
       "id": 2,
       "title": "Інтерстеллар",
-      "posterUrl": "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",
+      "posterUrl": "https://www.themoviedb.org/t/p/w1280/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
       "trailerUrl": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
       "releaseDate": "2014",
       "description": "Команда дослідників подорожує через кротовину в космосі, щоб забезпечити виживання людства.",

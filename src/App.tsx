@@ -10,6 +10,7 @@ import {
 import Navbar from "./components/Common/Navbar.tsx";
 import FavoritePage from "./pages/FavoritePage.tsx";
 import EditProfile from "./components/Profile/EditProfile.tsx";
+import MoviesPage from "./pages/MoviesPages.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,9 +23,10 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <NotFoundPage />,
     children: [
-      // { path: "/profile/:userId", element: <ProfilePage /> },
+      {path: "/profile", element: <ProfilePage /> },
       {path: "/favorites", element: <FavoritePage/>},
       {path: "/settings", element: <EditProfile/>},
+      {path: "/movies", element: <MoviesPage/>},
       {path: "/movie/:movieId", element: <MoviePage/>},
     ]
   }
