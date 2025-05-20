@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, FormControl, Select, MenuItem, InputLabel } from '@mui/material';
+import SearchBar from './SearchBar';
 
 const genres = ['Бойовик', 'Комедія', 'Драма'];
 const countries = ['Україна', 'США', 'Франція'];
@@ -45,6 +46,8 @@ const MovieFilter: React.FC = () => {
                         {audios.map((a) => <MenuItem key={a} value={a}>{a}</MenuItem>)}
                     </Select>
                 </FormControl>
+
+                <SearchBar/>
             </Box>
         </Box>
     );
