@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent, FormEvent} from "react";
+import React, {useState, ChangeEvent, FormEvent, useEffect} from "react";
 import {Api} from "../api/config"
 import {
     Box,
@@ -9,15 +9,17 @@ import {
     Button,
 } from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
+import {useAuth} from "../../context/AuthProvider";
 
 interface FormData {
     email: string;
     password: string;
 }
 
-const AuthForm: React.FC = () => {
+const AdminAuthForm: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const {login, isAuthenticated, user} = useAuth();
 
     const queryParams = new URLSearchParams(location.search);
     const backRoute = queryParams.get("back") || "/admin";
@@ -26,6 +28,14 @@ const AuthForm: React.FC = () => {
         email: "",
         password: "",
     });
+
+    // Check if already authenticated and redirect if needed
+    useEffect(() => {
+        if (isAuthenticated && user) {
+            console.log("Admin user is already authenticated, redirecting to:", backRoute);
+            navigate(backRoute, { replace: true });
+        }
+    }, [isAuthenticated, user, navigate, backRoute]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({...prev, [e.target.name]: e.target.value}));
@@ -36,6 +46,7 @@ const AuthForm: React.FC = () => {
         const url = Api.LOGIN_ADMIN;
 
         try {
+            console.log("Submitting admin auth form to:", url);
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
@@ -44,16 +55,20 @@ const AuthForm: React.FC = () => {
                 body: JSON.stringify(formData),
             });
             const data = await response.json();
-            console.log(data);
-            if (data.success) {
-                localStorage.setItem("token", data.token);
-                navigate(backRoute);
+            console.log("Admin auth response:", data);
+            
+            if (response.ok && data.success && data.token) {
+                console.log("Admin login successful, setting token and redirecting to:", backRoute);
+                login(data.token);
+                // Use replace: true to prevent back button from returning to login
+                navigate(backRoute, { replace: true });
             } else {
                 alert(data.message || "Помилка входу");
             }
 
         } catch (error) {
             console.error("Помилка при запиті:", error);
+            alert("Помилка з'єднання з сервером");
         }
     };
 
@@ -153,4 +168,4 @@ const AuthForm: React.FC = () => {
     );
 };
 
-export default AuthForm;
+export default AdminAuthForm;
