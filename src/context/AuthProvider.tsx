@@ -1,135 +1,130 @@
-import React, {createContext, ReactNode, useEffect, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 
 interface User {
-  avatarUrl?: string;
-  username: string;
-  email: string;
-  password: string;
-  bio?: string;
-  favoriteFilms?: { title: string, posterUrl: string }[];
+    user_id: string;
+    name: string;
+    email: string;
+    role_id: string;
+    exp: number;
+
+    [key: string]: any;
 }
 
-interface UserContextProps {
-  user: User | null;
-  login: (email: string, password: string) => void;
-  register: (username: string, email: string, password: string) => void;
-  logout: () => void;
-  isLoggedIn: () => boolean;
-  addFavoriteFilm: (title: string, posterUrl: string) => void;
-  removeFavoriteFilm: (title: string) => void;
-  isFilmInFavorites: (title: string) => boolean;
-  updateUser: (updatedUser: User) => void;
+interface AuthContextType {
+    user: User | null;
+    token: string | null;
+    login: (token: string) => void;
+    logout: () => void;
+    isAuthenticated: boolean;
 }
 
-export const UserContext = createContext<UserContextProps>({} as UserContextProps);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
-  const login = async (email: string, password: string) => {
+function parseJwt(token: string): User | null {
     try {
-      const response = await fetch('/src/data/usersData.json');
-      if (!response.ok) throw new Error('Failed to fetch user data');
-      const data = await response.json();
-      const users: User[] = data.users;
-      const fetchedUser = users.find(
-        (u) => u.email === email && u.password === password
-      );
-      if (fetchedUser) {
-        setUser(fetchedUser);
-        localStorage.setItem("user", JSON.stringify(fetchedUser));
-      } else {
-        throw new Error('Невірний email або пароль');
-      }
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'An unknown error occurred');
+        const base64Url = token.split(".")[1];
+        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split("")
+                .map((c) => `%${("00" + c.charCodeAt(0).toString(16)).slice(-2)}`)
+                .join("")
+        );
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error("Error parsing JWT token:", e);
+        return null;
     }
-  };
+}
 
-  const register = async (username: string, email: string, password: string) => {
-    try {
-      const response = await fetch('/src/data/usersData.json');
-      if (!response.ok) throw new Error('Failed to fetch user data');
-      const data = await response.json();
-      const users: User[] = data.users;
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+    const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));
+    const [user, setUser] = useState<User | null>(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+            const parsed = parseJwt(storedToken);
+            if (parsed && parsed.exp * 1000 > Date.now()) {
+                return parsed;
+            } else {
+                // Token expired, remove it
+                console.log("Token expired on load, removing");
+                localStorage.removeItem("token");
+                return null;
+            }
+        }
+        return null;
+    });
 
-      if (users.some((u) => u.email === email)) {
-        throw new Error('Email is already registered');
-      }
+    useEffect(() => {
+        if (token) {
+            const parsed = parseJwt(token);
+            if (parsed && parsed.exp * 1000 > Date.now()) {
+                console.log("Valid token detected, user authenticated:", parsed);
+                setUser(parsed);
+            } else {
+                console.log("Invalid or expired token detected, logging out");
+                logout();
+            }
+        } else {
+            console.log("No token found, user is not authenticated");
+        }
+    }, [token]);
 
-      const newUser: User = {username, email, password};
+    // Add a timer to check token expiration periodically
+    useEffect(() => {
+        const checkTokenInterval = setInterval(() => {
+            const storedToken = localStorage.getItem("token");
+            if (storedToken) {
+                const parsed = parseJwt(storedToken);
+                if (!parsed || parsed.exp * 1000 <= Date.now()) {
+                    console.log("Token expired during session, logging out");
+                    logout();
+                }
+            }
+        }, 60000); // Check every minute
+        
+        return () => clearInterval(checkTokenInterval);
+    }, []);
 
-      await fetch('/src/data/usersData.json', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({users: [...users, newUser]}),
-      });
-
-      setUser(newUser);
-      localStorage.setItem('user', JSON.stringify(newUser));
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'An unknown error occurred');
-    }
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-  };
-
-  const isLoggedIn = () => {
-    return user !== null;
-  };
-
-  const addFavoriteFilm = (title: string, posterUrl: string) => {
-    if (!user) return;
-
-    const updatedUser = {
-      ...user,
-      favoriteFilms: [...(user.favoriteFilms || []), {title, posterUrl}],
+    const login = (newToken: string) => {
+        console.log("Login called with new token");
+        localStorage.setItem("token", newToken);
+        setToken(newToken);
+        const parsed = parseJwt(newToken);
+        if (parsed) {
+            console.log("User authenticated:", parsed);
+            setUser(parsed);
+        } else {
+            console.error("Failed to parse user from token");
+        }
     };
 
-    updateUser(updatedUser);
-  };
-
-  const removeFavoriteFilm = (filmTitle: string) => {
-    if (!user) return;
-
-    const updatedUser = {
-      ...user,
-      favoriteFilms: user.favoriteFilms?.filter((film) => film.title !== filmTitle) || [],
+    const logout = () => {
+        console.log("Logging out user");
+        localStorage.removeItem("token");
+        setToken(null);
+        setUser(null);
     };
 
-    updateUser(updatedUser);
-  };
+    const authValue = {
+        user, 
+        token, 
+        login, 
+        logout, 
+        isAuthenticated: !!user
+    };
 
-  const updateUser = (updatedUser: User) => {
-    setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-  };
+    console.log("Auth state:", { isAuthenticated: !!user, hasToken: !!token, userRole: user?.role_id });
 
-  const isFilmInFavorites = (filmTitle: string): boolean => {
-    if (!user || !user.favoriteFilms) return false;
-    return user.favoriteFilms.some((film) => film.title === filmTitle);
-  };
-
-  return (
-    <UserContext.Provider
-      value={{user, login, register, logout, isLoggedIn, addFavoriteFilm, removeFavoriteFilm, isFilmInFavorites, updateUser}}>
-      {children}
-    </UserContext.Provider>
-  );
+    return (
+        <AuthContext.Provider value={authValue}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
-export default AuthProvider;
+export const useAuth = (): AuthContextType => {
+    const context = useContext(AuthContext);
+    if (!context) throw new Error("useAuth must be used within AuthProvider");
+    return context;
+};

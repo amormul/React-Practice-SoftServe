@@ -7,8 +7,6 @@ import {
     TextField,
     Paper,
     Button,
-    Checkbox,
-    FormControlLabel
 } from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -23,6 +21,7 @@ const AuthForm: React.FC = () => {
 
     const queryParams = new URLSearchParams(location.search);
     const backRoute = queryParams.get("back") || "/admin";
+
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
@@ -54,23 +53,38 @@ const AuthForm: React.FC = () => {
             }
 
         } catch (error) {
-
             console.error("Помилка при запиті:", error);
         }
     };
 
-
     return (
-        <Paper elevation={3} sx={{maxWidth: 400, mx: "auto", mt: 8, p: 4}}>
-            <Tabs centered sx={{
-                "& .MuiTabs-indicator": {backgroundColor: "#FF0000"},
-            }}>
-                <Tab label="Вхід" value="login" sx={{
-                    color: "#000",
-                    "&.Mui-selected": {
-                        color: "#FF0000",
-                    },
-                }}/>
+        <Paper
+            elevation={3}
+            sx={{
+                maxWidth: 400,
+                mx: "auto",
+                mt: 8,
+                p: 4,
+                backgroundColor: "#1e1e1e",
+                color: "#fff",
+            }}
+        >
+            <Tabs
+                centered
+                sx={{
+                    "& .MuiTabs-indicator": {backgroundColor: "#FF0000"},
+                }}
+            >
+                <Tab
+                    label="Вхід"
+                    value="login"
+                    sx={{
+                        color: "#ccc",
+                        "&.Mui-selected": {
+                            color: "#FF0000",
+                        },
+                    }}
+                />
             </Tabs>
 
             <Box component="form" onSubmit={handleSubmit} mt={2}>
@@ -82,23 +96,14 @@ const AuthForm: React.FC = () => {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    sx={{
-                        '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#fff',
+                    InputLabelProps={{
+                        style: { color: '#bbb' },
+                    }}
+                    InputProps={{
+                        style: {
+                            backgroundColor: '#2c2c2c',
+                            color: '#fff',
                             borderRadius: '10px',
-                            color: '#000',
-                            '& fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
-                            '&:hover fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
-                            '&.Mui-focused fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
                         },
                     }}
                 />
@@ -110,46 +115,38 @@ const AuthForm: React.FC = () => {
                     type="password"
                     value={formData.password}
                     onChange={handleChange}
-                    sx={{
-                        '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#fff',
+                    InputLabelProps={{
+                        style: { color: '#bbb' },
+                    }}
+                    InputProps={{
+                        style: {
+                            backgroundColor: '#2c2c2c',
+                            color: '#fff',
                             borderRadius: '10px',
-                            color: '#000',
-                            '& fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
-                            '&:hover fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
-                            '&.Mui-focused fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
                         },
                     }}
                 />
-                <Button fullWidth variant="contained" type="submit" className="auth_form_button"
-                        sx={{
-                            backgroundColor: '#FF0000',
-                            border: 'none',
-                            transition: '.4s',
-                            borderRadius: '15px',
-                            '&:hover': {
-                                backgroundColor: 'darkred',
-
-                            },
-                            '&:focus': {
-                                outline: 'none',
-                                backgroundColor: 'crimson',
-                                border: 'none',
-                            },
-                            '&:active': {
-                                backgroundColor: 'red',
-                            }
-                        }}>
-                    "Увійти"
+                <Button
+                    fullWidth
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                        mt: 2,
+                        backgroundColor: '#FF0000',
+                        color: '#fff',
+                        borderRadius: '15px',
+                        '&:hover': {
+                            backgroundColor: 'darkred',
+                        },
+                        '&:focus': {
+                            backgroundColor: 'crimson',
+                        },
+                        '&:active': {
+                            backgroundColor: 'red',
+                        },
+                    }}
+                >
+                    Увійти
                 </Button>
             </Box>
         </Paper>

@@ -1,28 +1,24 @@
 import {Avatar, Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import ProfileStatCard from "../Profile/ProfileStatCard.tsx";
-import FilmDetailList from "./FilmDetailList.tsx";
 import UserBio from "../Profile/UserBio.tsx";
-import ReactPlayer from "react-player";
-import {useState} from "react";
-import FavoriteButton from "../FavoriteButton.tsx";
+import {Api} from "../api/config.ts"
 
-interface MovieHeaderProps {
-  posterUrl: string
-  trailerUrl: string
-  title: string
-  description: string
-  releaseDate: string
-  IMDbRating: number
-  totalReviews: number
-  details: { name: string; description: string }[]
+interface Movie {
+  id: number;
+  title: string;
+  description: string;
+  duration: number;
+  rating: number;
+  year: number;
+  director: { id: number; name: string } | null;
+  genres: { id: number; name: string }[];
+  actors: { id: number; name: string; char_name: string }[];
 }
 
-function MovieHeader({...props}: MovieHeaderProps) {
-  const {posterUrl, trailerUrl, title, releaseDate, description, IMDbRating, totalReviews, details} = props
+function MovieHeader({...movie}: Movie) {
   const theme = useTheme();
-  const [showPlayer, setShowPlayer] = useState(false);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-
+  const posterUrl = Api.IMAGES_MOVIES +"/" + movie.id
   return (
     <Grid
       container
@@ -49,51 +45,21 @@ function MovieHeader({...props}: MovieHeaderProps) {
                 textAlign="start"
                 fontSize={{xs: '1.7rem', sm: '1.9rem', md: '2.1rem', lg: '2.4rem'}}
               >
-                {title}
+                {movie.title}
               </Typography>
             )}
             <Box sx={{position: "relative", display: "inline-block"}}>
               <Avatar
                 src={posterUrl}
-                alt={title}
+                alt={movie.title}
                 variant="square"
                 sx={{
                   width: {xs: 300, sm: 280, md: 150, lg: 200},
                   height: {xs: 460, sm: 420, md: 225, lg: 270}
                 }}
               />
-              <Box sx={{position: "absolute", top: 8, right: 8, zIndex: 1}}>
-                <FavoriteButton title={title} posterUrl={posterUrl}/>
-              </Box>
             </Box>
             <Button variant="contained" fullWidth>Обрати сеанс</Button>
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={{mt: 1}}
-              onClick={() => setShowPlayer(true)}
-            >
-              Трейлер
-            </Button>
-            {showPlayer && (
-              <Box
-                sx={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  backgroundColor: "rgba(0, 0, 0, 0.8)",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  zIndex: 1000,
-                }}
-                onClick={() => setShowPlayer(false)}
-              >
-                <ReactPlayer url={trailerUrl} playing controls/>
-              </Box>
-            )}
           </Stack>
           <Stack alignItems="start" spacing={1}>
             {!isSmallScreen && (
@@ -103,7 +69,7 @@ function MovieHeader({...props}: MovieHeaderProps) {
                 textAlign="start"
                 fontSize={{xs: '1.5rem', sm: '1.5rem', md: '2.0rem', lg: '2.4rem'}}
               >
-                {title}
+                {movie.title}
               </Typography>
             )}
             {!isSmallScreen && (
@@ -112,12 +78,12 @@ function MovieHeader({...props}: MovieHeaderProps) {
                 fontSize={{xs: '0.8rem', sm: '0.9rem', md: '0.85rem', lg: '1.1rem'}}
                 textAlign="left"
               >
-                {description}
+                {movie.description}
               </Typography>
             )}
           </Stack>
         </Stack>
-        {isSmallScreen && <UserBio bio={description} maxWords={300}/>}
+        {isSmallScreen && <UserBio bio={movie.description} maxWords={300}/>}
       </Grid>
 
       {/* Movie Statistics */}
@@ -128,16 +94,13 @@ function MovieHeader({...props}: MovieHeaderProps) {
         sx={{maxHeight: '300px'}}
       >
         <Grid size={{xs: 4}}>
-          <ProfileStatCard title="IMDb" value={IMDbRating}/>
+          <ProfileStatCard title="IMDb" value={movie.rating}/>
         </Grid>
         <Grid size={{xs: 4}}>
-          <ProfileStatCard title="Рік" value={releaseDate}/>
+          <ProfileStatCard title="Рік" value={movie.year}/>
         </Grid>
         <Grid size={{xs: 4}}>
-          <ProfileStatCard title="Reviews" value={totalReviews}/>
-        </Grid>
-        <Grid size={{xs: 12}}>
-          <FilmDetailList details={details}/>
+          <ProfileStatCard title="Reviews" value={4}/>
         </Grid>
       </Grid>
     </Grid>

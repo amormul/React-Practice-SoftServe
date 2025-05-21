@@ -1,40 +1,16 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-
-interface Actor {
-  name: string;
-  role: string;
-  photoUrl: string;
-}
-
-interface Review {
-  id: number;
-  user: string;
-  comment: string;
-  rating: number;
-  date: string;
-}
-
-interface RelatedFilm {
-  id: number;
-  title: string;
-  posterUrl: string;
-}
+import {Api} from "../components/api/config"
 
 interface Movie {
   id: number;
   title: string;
-  posterUrl: string;
-  trailerUrl: string;
-  releaseDate: string;
   description: string;
-  IMDbRating: number;
-  genres: string[];
-  duration: string;
-  language: string;
-  director: string;
-  actors: Actor[];
-  reviews: Review[];
-  relatedFilms: RelatedFilm[];
+  duration: number;
+  rating: number;
+  year: number;
+  director: { id: number; name: string } | null;
+  genres: { id: number; name: string }[];
+  actors: { id: number; name: string; char_name: string }[];
 }
 
 interface MovieContextType {
@@ -54,12 +30,12 @@ const MovieProvider = ({ children }: MovieProviderProps) => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await fetch('/src/data/filmData.json');
+        const response = await fetch(Api.MOVIES_ADMIN);
         if (!response.ok) {
           throw new Error('Failed to fetch movie data');
         }
         const data = await response.json();
-        setMovies(data.films);
+        setMovies(data);
       } catch (error) {
         console.error('Error fetching movies:', error);
       }

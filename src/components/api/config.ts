@@ -21,4 +21,5 @@ export class Api {
     static readonly LOGIN_ADMIN = Api.API_ADMIN_BASE + "login";
     static readonly TICKETS = Api.API_BASE + "tickets";
     static readonly TICKETS_CHECK = Api.API_BASE + "tickets_check";
+    static readonly USERS = Api.API_BASE + "users";
 }
