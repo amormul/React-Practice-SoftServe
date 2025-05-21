@@ -20,6 +20,7 @@ import {
     useTheme,
     alpha
 } from "@mui/material"
+import { useNavigate, useLocation } from "react-router-dom"
 
 type SeatType = "a" | "b" | "x"
 type SeatCell = { type: SeatType; row: number; col: number; selected?: boolean; booked?: boolean } | "." | "-"
@@ -136,6 +137,8 @@ const getMovieImageUrl = (movieId: number): string => {
 export default function SeatPicker() {
     const theme = useTheme();
     const isDarkTheme = theme.palette.mode === 'dark';
+    const navigate = useNavigate();
+    const location = useLocation();
     
     const [halls, setHalls] = useState<Hall[]>([])
     const [movies, setMovies] = useState<Movie[]>([])
@@ -147,6 +150,7 @@ export default function SeatPicker() {
     const [selectedSeats, setSelectedSeats] = useState<Seat[]>([])
     const [ticket, setTicket] = useState<Ticket | null>(null)
     const [pressedSeat, setPressedSeat] = useState<{row: number, col: number} | null>(null);
+    const [mode, setMode] = useState<'date-movie-time' | 'movie-date-time'>('date-movie-time');
 
     const selectedSession = sessions.find(session => session.id === selectedSessionId)
     const selectedMovie = selectedSession ? movies.find(movie => movie.id === selectedSession.movie_id) : undefined
@@ -181,9 +185,45 @@ export default function SeatPicker() {
                 setMovies(moviesData)
                 setSessions(sessionsData)
 
+                // Отримуємо movieId з URL, якщо він є
+                const searchParams = new URLSearchParams(location.search);
+                const movieIdFromUrl = searchParams.get('movieId');
+                
                 if (sessionsData.length > 0) {
                     const uniqueDates = [...new Set(sessionsData.map(s => s.date || ''))].sort()
-                    if (uniqueDates.length > 0) {
+                    
+                    if (movieIdFromUrl) {
+                        // Якщо movieId переданий у URL, встановлюємо режим 'movie-date-time'
+                        const movieId = parseInt(movieIdFromUrl);
+                        setMode('movie-date-time');
+                        
+                        // Перевіряємо, чи є такий фільм у списку фільмів
+                        const movieExists = moviesData.some(m => m.id === movieId);
+                        
+                        if (movieExists) {
+                            setSelectedMovieId(movieId);
+                            
+                            // Шукаємо сесії для цього фільму
+                            const sessionsForMovie = sessionsData.filter(s => s.movie_id === movieId);
+                            
+                            if (sessionsForMovie.length > 0) {
+                                // Сортуємо дати і вибираємо найближчу
+                                const movieDates = [...new Set(sessionsForMovie.map(s => s.date || ''))].sort();
+                                if (movieDates.length > 0) {
+                                    setSelectedDate(movieDates[0]);
+                                    
+                                    // Вибираємо перший сеанс для цієї дати і фільму
+                                    const sessionsForDate = sessionsForMovie.filter(s => s.date === movieDates[0]);
+                                    if (sessionsForDate.length > 0) {
+                                        setSelectedSessionId(sessionsForDate[0].id);
+                                        setMapText(sessionsForDate[0].seat_map ||
+                                            hallsData.find(h => h.id === sessionsForDate[0].hall_id)?.seat_map_template || "");
+                                    }
+                                }
+                            }
+                        }
+                    } else if (uniqueDates.length > 0) {
+                        // Стандартний сценарій, як був раніше, якщо нема movieId в URL
                         setSelectedDate(uniqueDates[0])
                         const sessionsForDate = sessionsData.filter(s => s.date === uniqueDates[0])
 
@@ -203,7 +243,7 @@ export default function SeatPicker() {
                 }
             })
             .catch(err => alert(err.message))
-    }, [])
+    }, [location.search]) // Додаємо location.search в залежності, щоб реагувати на зміни URL
 
     const availableDates = useMemo(() => {
         return [...new Set(sessions.map(s => s.date || ''))].sort()
@@ -223,6 +263,17 @@ export default function SeatPicker() {
             s.movie_id === selectedMovieId
         ).sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
     }, [sessions, selectedDate, selectedMovieId])
+
+    const availableMoviesByAll = useMemo(() => {
+        const movieIds = [...new Set(sessions.map(s => s.movie_id))];
+        return movies.filter(movie => movieIds.includes(movie.id));
+    }, [sessions, movies]);
+
+    const availableDatesByMovie = useMemo(() => {
+        if (!selectedMovieId) return [];
+        const sessionsForMovie = sessions.filter(s => s.movie_id === selectedMovieId);
+        return [...new Set(sessionsForMovie.map(s => s.date || ''))].sort();
+    }, [sessions, selectedMovieId]);
 
     useEffect(() => {
         if (selectedSessionId && selectedSeats.length > 0) {
@@ -387,6 +438,10 @@ export default function SeatPicker() {
         };
     }, []);
 
+    const handleToggleMode = () => {
+        setMode(prev => prev === 'date-movie-time' ? 'movie-date-time' : 'date-movie-time');
+    };
+
     return (
         <Box 
             display="flex" 
@@ -398,69 +453,158 @@ export default function SeatPicker() {
                 minHeight: '100vh'
             }}
         >
-            {/* Session selection and movie information */}
             <Paper elevation={3} sx={{ p: 3, bgcolor: isDarkTheme ? 'background.paper' : 'white' }}>
-                <Typography variant="h5" gutterBottom>
-                    Вибір сеансу
-                </Typography>
-
-                <Box display="flex" gap={2}>
-                    {/* Date selection */}
-                    <FormControl sx={{minWidth: 150}}>
-                        <InputLabel id="date-select-label">Дата</InputLabel>
-                        <Select
-                            labelId="date-select-label"
-                            value={selectedDate}
-                            onChange={handleDateChange}
-                            label="Дата"
-                        >
-                            {availableDates.map((date) => (
-                                <MenuItem key={date} value={date}>
-                                    {date}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    {/* Movie selection */}
-                    <FormControl sx={{minWidth: 200}} disabled={!selectedDate}>
-                        <InputLabel id="movie-select-label">Фільм</InputLabel>
-                        <Select
-                            labelId="movie-select-label"
-                            value={selectedMovieId}
-                            onChange={handleMovieChange}
-                            label="Фільм"
-                        >
-                            {availableMovies.map((movie) => (
-                                <MenuItem key={movie.id} value={movie.id}>
-                                    {movie.title}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    {/* Session time selection */}
-                    <FormControl sx={{minWidth: 150}} disabled={!selectedMovieId}>
-                        <InputLabel id="session-select-label">Час</InputLabel>
-                        <Select
-                            labelId="session-select-label"
-                            value={selectedSessionId}
-                            onChange={handleSessionChange}
-                            label="Час"
-                        >
-                            {availableSessions.map((session) => (
-                                <MenuItem key={session.id} value={session.id}>
-                                    {new Date(session.time).toLocaleTimeString('uk-UA', {
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    })}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Typography variant="h5">
+                        Вибір сеансу
+                    </Typography>
+                    <Button variant="outlined" onClick={handleToggleMode} size="small">
+                        {mode === 'date-movie-time' ? 'Режим: Дата → Фільм → Час' : 'Режим: Фільм → Дата → Час'}
+                    </Button>
                 </Box>
 
-                {/* Movie info card */}
+                <Box display="flex" gap={2}>
+                    {mode === 'date-movie-time' ? (
+                        <>
+                            <FormControl sx={{minWidth: 150}}>
+                                <InputLabel id="date-select-label">Дата</InputLabel>
+                                <Select
+                                    labelId="date-select-label"
+                                    value={selectedDate}
+                                    onChange={handleDateChange}
+                                    label="Дата"
+                                >
+                                    {availableDates.map((date) => (
+                                        <MenuItem key={date} value={date}>
+                                            {date}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl sx={{minWidth: 200}} disabled={!selectedDate}>
+                                <InputLabel id="movie-select-label">Фільм</InputLabel>
+                                <Select
+                                    labelId="movie-select-label"
+                                    value={selectedMovieId}
+                                    onChange={handleMovieChange}
+                                    label="Фільм"
+                                >
+                                    {availableMovies.map((movie) => (
+                                        <MenuItem key={movie.id} value={movie.id}>
+                                            {movie.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl sx={{minWidth: 150}} disabled={!selectedMovieId}>
+                                <InputLabel id="session-select-label">Час</InputLabel>
+                                <Select
+                                    labelId="session-select-label"
+                                    value={selectedSessionId}
+                                    onChange={handleSessionChange}
+                                    label="Час"
+                                >
+                                    {availableSessions.map((session) => (
+                                        <MenuItem key={session.id} value={session.id}>
+                                            {new Date(session.time).toLocaleTimeString('uk-UA', {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </>
+                    ) : (
+                        <>
+                            <FormControl sx={{minWidth: 200}}>
+                                <InputLabel id="movie-select-label">Фільм</InputLabel>
+                                <Select
+                                    labelId="movie-select-label"
+                                    value={selectedMovieId}
+                                    onChange={(e) => {
+                                        const movieId = Number(e.target.value);
+                                        const datesForMovie = sessions.filter(s => s.movie_id === movieId).map(s => s.date || '');
+                                        let newDate = selectedDate;
+                                        if (!datesForMovie.includes(selectedDate)) {
+                                            newDate = datesForMovie[0] || '';
+                                        }
+                                        let newSessionId = selectedSessionId;
+                                        const sessionExists = sessions.some(s => s.movie_id === movieId && s.date === newDate && s.id === selectedSessionId);
+                                        if (!sessionExists) {
+                                            const firstSession = sessions.find(s => s.movie_id === movieId && s.date === newDate);
+                                            newSessionId = firstSession ? firstSession.id : '';
+                                        }
+                                        setSelectedMovieId(movieId);
+                                        setSelectedDate(newDate);
+                                        setSelectedSessionId(newSessionId);
+                                        setSelectedSeats([]);
+                                    }}
+                                    label="Фільм"
+                                >
+                                    {availableMoviesByAll.map((movie) => (
+                                        <MenuItem key={movie.id} value={movie.id}>
+                                            {movie.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl sx={{minWidth: 150}} disabled={!selectedMovieId}>
+                                <InputLabel id="date-select-label">Дата</InputLabel>
+                                <Select
+                                    labelId="date-select-label"
+                                    value={selectedDate}
+                                    onChange={(e) => {
+                                        const date = e.target.value;
+                                        let newMovieId = selectedMovieId;
+                                        const moviesForDate = sessions.filter(s => s.date === date).map(s => s.movie_id);
+                                        if (!moviesForDate.includes(selectedMovieId)) {
+                                            newMovieId = moviesForDate[0] || '';
+                                        }
+                                        let newSessionId = selectedSessionId;
+                                        const sessionExists = sessions.some(s => s.movie_id === newMovieId && s.date === date && s.id === selectedSessionId);
+                                        if (!sessionExists) {
+                                            const firstSession = sessions.find(s => s.movie_id === newMovieId && s.date === date);
+                                            newSessionId = firstSession ? firstSession.id : '';
+                                        }
+                                        setSelectedDate(date);
+                                        setSelectedMovieId(newMovieId);
+                                        setSelectedSessionId(newSessionId);
+                                        setSelectedSeats([]);
+                                    }}
+                                    label="Дата"
+                                >
+                                    {availableDatesByMovie.map((date) => (
+                                        <MenuItem key={date} value={date}>
+                                            {date}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl sx={{minWidth: 150}} disabled={!selectedMovieId || !selectedDate}>
+                                <InputLabel id="session-select-label">Час</InputLabel>
+                                <Select
+                                    labelId="session-select-label"
+                                    value={selectedSessionId}
+                                    onChange={handleSessionChange}
+                                    label="Час"
+                                >
+                                    {sessions.filter(s => s.movie_id === selectedMovieId && s.date === selectedDate)
+                                        .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+                                        .map((session) => (
+                                            <MenuItem key={session.id} value={session.id}>
+                                                {new Date(session.time).toLocaleTimeString('uk-UA', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </MenuItem>
+                                        ))}
+                                </Select>
+                            </FormControl>
+                        </>
+                    )}
+                </Box>
+
                 {selectedMovie && selectedSession && (
                     <Box display="flex" gap={3} mt={2}>
                         <Card sx={{
@@ -475,7 +619,8 @@ export default function SeatPicker() {
                                 height="200"
                                 image={getMovieImageUrl(selectedMovie.id)}
                                 alt={selectedMovie.title}
-                                sx={{objectFit: 'cover'}}
+                                sx={{objectFit: 'cover', cursor: 'pointer'}}
+                                onClick={() => navigate(`/movie/${selectedMovie.id}`)}
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h6" component="div">
@@ -513,9 +658,7 @@ export default function SeatPicker() {
                 )}
             </Paper>
 
-            {/* Main content area with seat map and ticket side by side */}
             <Box display="flex" gap={3} flexDirection={{ xs: 'column', md: 'row' }}>
-                {/* Seat map section */}
                 <Paper 
                     elevation={3} 
                     sx={{ 
@@ -529,7 +672,6 @@ export default function SeatPicker() {
                         Виберіть місця
                     </Typography>
                     <Box display="flex" gap={2} pt={1}>
-                        {/* підписи рядів */}
                         <Box
                             display="flex"
                             flexDirection="column"
@@ -556,7 +698,6 @@ export default function SeatPicker() {
                             ))}
                         </Box>
 
-                        {/* місця */}
                         <Box display="flex" flexDirection="column" gap={`${SeatUIValues.ROW_GAP}px`}>
                             {seatMap.map((row, rowIndex) => (
                                 <Box key={rowIndex} display="flex" gap={`${SeatUIValues.SEAT_GAP}px`}>
@@ -629,7 +770,6 @@ export default function SeatPicker() {
                         </Box>
                     </Box>
 
-                    {/* Legend */}
                     <Box mt={3} display="flex" gap={2} flexWrap="wrap">
                         <Box display="flex" alignItems="center" gap={1}>
                             <Box 
@@ -669,7 +809,6 @@ export default function SeatPicker() {
                         </Box>
                     </Box>
 
-                    {/* Інформація про вибрані місця */}
                     {selectedSeats.length > 0 && (
                         <Box mt={3}>
                             <Typography variant="subtitle1">Вибрані місця:</Typography>
@@ -706,7 +845,6 @@ export default function SeatPicker() {
                     )}
                 </Paper>
 
-                {/* Ticket display - now shown side by side with seat map */}
                 {ticket && (
                     <Paper
                         elevation={3}
@@ -719,7 +857,7 @@ export default function SeatPicker() {
                             display: 'flex',
                             flexDirection: 'column'
                         }}
-                >
+                    >
                     <Typography variant="h5" mb={2} color="primary">
                         Квиток
                     </Typography>

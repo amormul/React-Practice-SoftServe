@@ -57,10 +57,10 @@ const BannerSlider: React.FC = () => {
         ),
     };
 
-    const handleSelectSession = () => {
-        const back = encodeURIComponent("/buy_tickets");
+    const handleSelectSession = (movieId: number) => {
+        const back = encodeURIComponent(`/buy_tickets?movieId=${movieId}`);
         if (isAuthenticated) {
-            navigate("/buy_tickets");
+            navigate(`/buy_tickets?movieId=${movieId}`);
         } else {
             navigate(`/login?back=${back}`);
         }
@@ -125,7 +125,7 @@ const BannerSlider: React.FC = () => {
 
                         <Stack direction="row" spacing={2}>
                             <Button
-                                onClick={handleSelectSession}
+                                onClick={() => handleSelectSession(movie.id)}
                                 variant="contained"
                                 size="large"
                                 startIcon={<CalendarMonthIcon />}

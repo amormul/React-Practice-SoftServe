@@ -2,6 +2,7 @@ import {Avatar, Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme} f
 import ProfileStatCard from "../Profile/ProfileStatCard.tsx";
 import UserBio from "../Profile/UserBio.tsx";
 import {Api} from "../api/config.ts"
+import { useNavigate } from "react-router-dom";
 
 interface Movie {
   id: number;
@@ -19,6 +20,12 @@ function MovieHeader({...movie}: Movie) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
   const posterUrl = Api.IMAGES_MOVIES +"/" + movie.id
+  const navigate = useNavigate();
+
+  const handleSelectSession = () => {
+    navigate(`/buy_tickets?movieId=${movie.id}`);
+  };
+  
   return (
     <Grid
       container
@@ -59,7 +66,13 @@ function MovieHeader({...movie}: Movie) {
                 }}
               />
             </Box>
-            <Button variant="contained" fullWidth>Обрати сеанс</Button>
+            <Button 
+              variant="contained" 
+              fullWidth
+              onClick={handleSelectSession}
+            >
+              Обрати сеанс
+            </Button>
           </Stack>
           <Stack alignItems="start" spacing={1}>
             {!isSmallScreen && (
