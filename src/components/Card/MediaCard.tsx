@@ -25,7 +25,7 @@ function MediaCard({...props}: MediaCardProps) {
   return (
     <Card
       sx={{
-        maxHeight: "430px",
+        height: "430px",
         borderRadius: "5px",
         transition: "transform 0.3s",
         cursor: "pointer",
@@ -54,7 +54,7 @@ function MediaCard({...props}: MediaCardProps) {
         component="img"
         image={imageUrl}
         alt={title}
-        sx={{maxHeight: {xs: "320px"}}}
+        sx={{height: {xs: "320px"}}}
       />
       <CardContent>
         {rating && (

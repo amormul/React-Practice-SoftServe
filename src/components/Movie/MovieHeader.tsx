@@ -1,146 +1,143 @@
 import {Avatar, Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import ProfileStatCard from "../Profile/ProfileStatCard.tsx";
-import FilmDetailList from "./FilmDetailList.tsx";
-import UserBio from "../Profile/UserBio.tsx";
-import ReactPlayer from "react-player";
-import {useState} from "react";
-import FavoriteButton from "../FavoriteButton.tsx";
+import {Api} from "../api/config.ts"
+import {useNavigate} from "react-router-dom";
 
-interface MovieHeaderProps {
-  posterUrl: string
-  trailerUrl: string
-  title: string
-  description: string
-  releaseDate: string
-  IMDbRating: number
-  totalReviews: number
-  details: { name: string; description: string }[]
+interface Movie {
+  id: number;
+  title: string;
+  description: string;
+  duration: number;
+  rating: number;
+  year: number;
+  director: { id: number; name: string } | null;
+  genres: { id: number; name: string }[];
+  actors: { id: number; name: string; char_name: string }[];
 }
 
-function MovieHeader({...props}: MovieHeaderProps) {
-  const {posterUrl, trailerUrl, title, releaseDate, description, IMDbRating, totalReviews, details} = props
+function MovieHeader({...movie}: Movie) {
   const theme = useTheme();
-  const [showPlayer, setShowPlayer] = useState(false);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const posterUrl = Api.IMAGES_MOVIES + "/" + movie.id
+  const navigate = useNavigate();
 
+  const handleSelectSession = () => {
+    navigate(`/buy_tickets?movieId=${movie.id}`);
+  };
+  
   return (
-    <Grid
-      container
-      direction={{sm: 'column', md: 'row'}}
-      justifyContent="space-between"
-      gap={{xs: 2, md: 4}}
-    >
-      {/* Movie Details */}
+    <Box sx={{ p: 2 }}>
       <Grid
         container
-        size={{md: 7}}
-        justifyContent="center"
-        alignItems="center"
+        spacing={4}
+        direction={{ xs: 'column', md: 'row' }}
       >
-        <Stack
-          direction="row"
-          spacing={{xs: 0, md: 3}}
-          paddingBottom={{xs: 3, md: 0}}
-        >
-          <Stack spacing={2} alignItems="center">
-            {isSmallScreen && (
-              <Typography
-                variant='h1'
-                textAlign="start"
-                fontSize={{xs: '1.7rem', sm: '1.9rem', md: '2.1rem', lg: '2.4rem'}}
-              >
-                {title}
-              </Typography>
-            )}
-            <Box sx={{position: "relative", display: "inline-block"}}>
-              <Avatar
-                src={posterUrl}
-                alt={title}
-                variant="square"
-                sx={{
-                  width: {xs: 300, sm: 280, md: 150, lg: 200},
-                  height: {xs: 460, sm: 420, md: 225, lg: 270}
-                }}
-              />
-              <Box sx={{position: "absolute", top: 8, right: 8, zIndex: 1}}>
-                <FavoriteButton title={title} posterUrl={posterUrl}/>
-              </Box>
-            </Box>
-            <Button variant="contained" fullWidth>Обрати сеанс</Button>
-            <Button
-              variant="outlined"
+        {/* Left Side - Movie Poster */}
+        <Grid item xs={12} md={4} lg={3}>
+          <Box sx={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+            <Avatar
+              src={posterUrl}
+              alt={movie.title}
+              variant="rounded"
+              sx={{
+                width: { xs: 300, sm: 320, md: "100%", lg: "100%" },
+                height: { xs: 450, sm: 480, md: 450, lg: 500 },
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.4)'
+              }}
+            />
+            <Button 
+              variant="contained" 
               fullWidth
-              sx={{mt: 1}}
-              onClick={() => setShowPlayer(true)}
+              size="large"
+              onClick={handleSelectSession}
+              sx={{ mt: 2 }}
             >
-              Трейлер
+              Обрати сеанс
             </Button>
-            {showPlayer && (
-              <Box
-                sx={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  backgroundColor: "rgba(0, 0, 0, 0.8)",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  zIndex: 1000,
-                }}
-                onClick={() => setShowPlayer(false)}
-              >
-                <ReactPlayer url={trailerUrl} playing controls/>
-              </Box>
-            )}
-          </Stack>
-          <Stack alignItems="start" spacing={1}>
-            {!isSmallScreen && (
+          </Box>
+        </Grid>
+
+        {/* Right Side - Movie Details */}
+        <Grid item xs={12} md={8} lg={9}>
+          <Stack spacing={3}>
+            {/* Title and Director */}
+            <Box>
               <Typography
                 variant='h3'
                 fontWeight='bold'
-                textAlign="start"
-                fontSize={{xs: '1.5rem', sm: '1.5rem', md: '2.0rem', lg: '2.4rem'}}
+                textAlign="left"
+                fontSize={{xs: '1.8rem', sm: '2rem', md: '2.2rem', lg: '2.6rem'}}
+                mb={1}
               >
-                {title}
+                {movie.title}
               </Typography>
+              
+              {movie.director && (
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  fontSize={{xs: '1rem', md: '1.1rem'}}
+                >
+                  Режисер: {movie.director.name}
+                </Typography>
+              )}
+            </Box>
+
+            {/* Movie Statistics */}
+            <Grid container spacing={2} sx={{ mb: 2 }}>
+              <Grid item xs={12} sm={4}>
+                <ProfileStatCard title="IMDb" value={movie.rating}/>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <ProfileStatCard title="Рік" value={movie.year}/>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <ProfileStatCard title="Тривалість" value={`${movie.duration} хв.`}/>
+              </Grid>
+            </Grid>
+
+            {/* Genres */}
+            {movie.genres.length > 0 && (
+              <Box>
+                <Typography variant="subtitle1" fontWeight="bold" mb={1}>
+                  Жанри:
+                </Typography>
+                <Stack direction="row" spacing={1} flexWrap="wrap">
+                  {movie.genres.map(genre => (
+                    <Box 
+                      key={genre.id} 
+                      sx={{ 
+                        p: "4px 12px", 
+                        borderRadius: "16px", 
+                        backgroundColor: "rgba(255, 0, 0, 0.08)", 
+                        mb: 1 
+                      }}
+                    >
+                      <Typography variant="body2">{genre.name}</Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </Box>
             )}
-            {!isSmallScreen && (
+
+            {/* Description */}
+            <Box>
+              <Typography variant="subtitle1" fontWeight="bold" mb={1}>
+                Опис:
+              </Typography>
               <Typography
                 variant="body1"
-                fontSize={{xs: '0.8rem', sm: '0.9rem', md: '0.85rem', lg: '1.1rem'}}
+                fontSize={{xs: '0.9rem', md: '1rem'}}
                 textAlign="left"
+                sx={{ lineHeight: 1.6 }}
               >
-                {description}
+                {movie.description}
               </Typography>
-            )}
+            </Box>
           </Stack>
-        </Stack>
-        {isSmallScreen && <UserBio bio={description} maxWords={300}/>}
-      </Grid>
-
-      {/* Movie Statistics */}
-      <Grid
-        container
-        spacing={2}
-        size={{xs: 12, md: 4}}
-        sx={{maxHeight: '300px'}}
-      >
-        <Grid size={{xs: 4}}>
-          <ProfileStatCard title="IMDb" value={IMDbRating}/>
-        </Grid>
-        <Grid size={{xs: 4}}>
-          <ProfileStatCard title="Рік" value={releaseDate}/>
-        </Grid>
-        <Grid size={{xs: 4}}>
-          <ProfileStatCard title="Reviews" value={totalReviews}/>
-        </Grid>
-        <Grid size={{xs: 12}}>
-          <FilmDetailList details={details}/>
         </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 }
 

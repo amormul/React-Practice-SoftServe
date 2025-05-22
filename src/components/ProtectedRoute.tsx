@@ -1,49 +1,45 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider.tsx";
 
 interface ProtectedRouteProps {
     children: React.ReactElement;
-    requiredRoleId?: number; // Наприклад, 1 — для адміна
-}
-
-function parseJwt(token: string): any | null {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(
-            atob(base64)
-                .split('')
-                .map((c) => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
-                .join('')
-        );
-        return JSON.parse(jsonPayload);
-    } catch (e) {
-        return null;
-    }
+    requiredRoleId?: number;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRoleId }) => {
-    const token = localStorage.getItem("token");
-    const location = window.location.pathname;
-    let url = requiredRoleId === 3 ? "/admin/login" : "/login"
-    url = url + `?back=${encodeURIComponent(location)}`
-    if (!token) {
-        return <Navigate to={url} replace />;
+    const { isAuthenticated, user } = useAuth();
+    const location = useLocation();
+
+    // Only encode the current path, not any existing query parameters
+    const backUrl = encodeURIComponent(location.pathname);
+    
+    // Check if user is authenticated and has the required role
+    const isAuthorized = isAuthenticated && (!requiredRoleId || user?.role_id === requiredRoleId);
+
+    // Add debugging
+    useEffect(() => {
+        console.log("ProtectedRoute state:", {
+            isAuthenticated,
+            userRole: user?.role_id,
+            requiredRole: requiredRoleId,
+            isAuthorized,
+            currentPath: location.pathname
+        });
+    }, [isAuthenticated, user, requiredRoleId, isAuthorized, location.pathname]);
+
+    if (!isAuthenticated) {
+        // User is not logged in at all
+        console.log("User not authenticated, redirecting to login");
+        const loginPath = requiredRoleId === 3 ? "/admin/login" : "/login";
+        return <Navigate to={`${loginPath}?back=${backUrl}`} replace />;
+    } else if (!isAuthorized) {
+        // User is logged in but doesn't have the required role
+        console.log("User authenticated but not authorized for this route");
+        return <Navigate to="/" replace />;
     }
 
-    const payload = parseJwt(token);
-
-    if (!payload) {
-        return <Navigate to={url} replace />;
-    }
-
-    const isExpired = payload.exp * 1000 < Date.now();
-    const hasRequiredRole = requiredRoleId ? payload.role_id === requiredRoleId : true;
-
-    if (isExpired || !hasRequiredRole) {
-        return <Navigate to={url} replace />;
-    }
-
+    // User is authenticated and authorized
     return children;
 };
 

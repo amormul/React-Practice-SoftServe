@@ -6,11 +6,10 @@ import "./slider.css";
 import App from "./App.tsx";
 import darkTheme from "./theme/theme.ts";
 import {CssBaseline} from "@mui/material";
-import AuthProvider from "./context/AuthProvider.tsx";
+import {AuthProvider} from "./context/AuthProvider.tsx";
 import MovieProvider from "./context/MovieProvider.tsx";
 import {ThemeProvider} from "@emotion/react";
 import {SnackbarProvider} from "./context/SnackbarProvider.tsx";
-import {AuthDialogProvider} from "./context/AuthDialogContext.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -18,11 +17,9 @@ createRoot(document.getElementById('root')!).render(
       <CssBaseline/>
       <AuthProvider>
         <SnackbarProvider>
-          <AuthDialogProvider>
             <MovieProvider>
               <App/>
             </MovieProvider>
-          </AuthDialogProvider>
         </SnackbarProvider>
       </AuthProvider>
     </ThemeProvider>

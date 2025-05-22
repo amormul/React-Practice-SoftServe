@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent, FormEvent} from "react";
+import React, {useState, ChangeEvent, FormEvent, useEffect} from "react";
 import {Api} from "../api/config"
 import {
     Box,
@@ -7,26 +7,35 @@ import {
     TextField,
     Paper,
     Button,
-    Checkbox,
-    FormControlLabel
 } from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
+import {useAuth} from "../../context/AuthProvider";
 
 interface FormData {
     email: string;
     password: string;
 }
 
-const AuthForm: React.FC = () => {
+const AdminAuthForm: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const {login, isAuthenticated, user} = useAuth();
 
     const queryParams = new URLSearchParams(location.search);
     const backRoute = queryParams.get("back") || "/admin";
+
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
     });
+
+    // Check if already authenticated and redirect if needed
+    useEffect(() => {
+        if (isAuthenticated && user) {
+            console.log("Admin user is already authenticated, redirecting to:", backRoute);
+            navigate(backRoute, { replace: true });
+        }
+    }, [isAuthenticated, user, navigate, backRoute]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({...prev, [e.target.name]: e.target.value}));
@@ -37,6 +46,7 @@ const AuthForm: React.FC = () => {
         const url = Api.LOGIN_ADMIN;
 
         try {
+            console.log("Submitting admin auth form to:", url);
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
@@ -45,32 +55,51 @@ const AuthForm: React.FC = () => {
                 body: JSON.stringify(formData),
             });
             const data = await response.json();
-            console.log(data);
-            if (data.success) {
-                localStorage.setItem("token", data.token);
-                navigate(backRoute);
+            console.log("Admin auth response:", data);
+            
+            if (response.ok && data.success && data.token) {
+                console.log("Admin login successful, setting token and redirecting to:", backRoute);
+                login(data.token);
+                // Use replace: true to prevent back button from returning to login
+                navigate(backRoute, { replace: true });
             } else {
                 alert(data.message || "Помилка входу");
             }
 
         } catch (error) {
-
             console.error("Помилка при запиті:", error);
+            alert("Помилка з'єднання з сервером");
         }
     };
 
-
     return (
-        <Paper elevation={3} sx={{maxWidth: 400, mx: "auto", mt: 8, p: 4}}>
-            <Tabs centered sx={{
-                "& .MuiTabs-indicator": {backgroundColor: "#FF0000"},
-            }}>
-                <Tab label="Вхід" value="login" sx={{
-                    color: "#000",
-                    "&.Mui-selected": {
-                        color: "#FF0000",
-                    },
-                }}/>
+        <Paper
+            elevation={3}
+            sx={{
+                maxWidth: 400,
+                mx: "auto",
+                mt: 8,
+                p: 4,
+                backgroundColor: "#1e1e1e",
+                color: "#fff",
+            }}
+        >
+            <Tabs
+                centered
+                sx={{
+                    "& .MuiTabs-indicator": {backgroundColor: "#FF0000"},
+                }}
+            >
+                <Tab
+                    label="Вхід"
+                    value="login"
+                    sx={{
+                        color: "#ccc",
+                        "&.Mui-selected": {
+                            color: "#FF0000",
+                        },
+                    }}
+                />
             </Tabs>
 
             <Box component="form" onSubmit={handleSubmit} mt={2}>
@@ -82,23 +111,14 @@ const AuthForm: React.FC = () => {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    sx={{
-                        '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#fff',
+                    InputLabelProps={{
+                        style: { color: '#bbb' },
+                    }}
+                    InputProps={{
+                        style: {
+                            backgroundColor: '#2c2c2c',
+                            color: '#fff',
                             borderRadius: '10px',
-                            color: '#000',
-                            '& fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
-                            '&:hover fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
-                            '&.Mui-focused fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
                         },
                     }}
                 />
@@ -110,50 +130,42 @@ const AuthForm: React.FC = () => {
                     type="password"
                     value={formData.password}
                     onChange={handleChange}
-                    sx={{
-                        '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#fff',
+                    InputLabelProps={{
+                        style: { color: '#bbb' },
+                    }}
+                    InputProps={{
+                        style: {
+                            backgroundColor: '#2c2c2c',
+                            color: '#fff',
                             borderRadius: '10px',
-                            color: '#000',
-                            '& fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
-                            '&:hover fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
-                            '&.Mui-focused fieldset': {
-                                borderColor: "none",
-                                color: '#fff',
-                            },
                         },
                     }}
                 />
-                <Button fullWidth variant="contained" type="submit" className="auth_form_button"
-                        sx={{
-                            backgroundColor: '#FF0000',
-                            border: 'none',
-                            transition: '.4s',
-                            borderRadius: '15px',
-                            '&:hover': {
-                                backgroundColor: 'darkred',
-
-                            },
-                            '&:focus': {
-                                outline: 'none',
-                                backgroundColor: 'crimson',
-                                border: 'none',
-                            },
-                            '&:active': {
-                                backgroundColor: 'red',
-                            }
-                        }}>
-                    "Увійти"
+                <Button
+                    fullWidth
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                        mt: 2,
+                        backgroundColor: '#FF0000',
+                        color: '#fff',
+                        borderRadius: '15px',
+                        '&:hover': {
+                            backgroundColor: 'darkred',
+                        },
+                        '&:focus': {
+                            backgroundColor: 'crimson',
+                        },
+                        '&:active': {
+                            backgroundColor: 'red',
+                        },
+                    }}
+                >
+                    Увійти
                 </Button>
             </Box>
         </Paper>
     );
 };
 
-export default AuthForm;
+export default AdminAuthForm;

@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Avatar, Button, ButtonGroup, Stack, TextField, Typography} from "@mui/material";
-import {UserContext} from "../../context/AuthProvider.tsx";
+import {useAuth} from "../../context/AuthProvider.tsx";
 
 function EditProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const {user, updateUser} = useContext(UserContext);
+  const {user, isAuthenticated} = useAuth()
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
@@ -44,7 +44,6 @@ function EditProfile() {
   };
 
   const handleSave = () => {
-    updateUser?.(profileData);
     setIsEditing(false);
   };
 

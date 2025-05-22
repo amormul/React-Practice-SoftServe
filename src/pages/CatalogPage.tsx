@@ -1,35 +1,37 @@
 import MovieFilter from '../components/MovieFilter.tsx';
 import MediaCard from "../components/Card/MediaCard.tsx";
-import {useEffect, useState} from "react";
-import filmJson from "../data/filmData.json";
+import {useContext} from "react";
 import CardSlider from "../components/Card/CardSlider.tsx";
 import TitleSection from "../components/Common/TitleSection.tsx";
+import {MovieContext} from "../context/MovieProvider.tsx";
+import {Api} from '../components/api/config.ts';
+import {useNavigate} from "react-router-dom";
+
 const CatalogPage = () => {
-
-
-    const [filmData, setFilmData] = useState(null);
-
-    useEffect(() => {
-        setFilmData(filmJson);
-    }, []);
-
-    if (!filmData) return <div>Loading...</div>;
-
-    const {
-        moreLikeThisFilms,
-    } = filmData;
+    const {movies} = useContext(MovieContext) || {movies: []};
+    const navigate = useNavigate();
 
     return (
         <div>
             <MovieFilter />
-            <TitleSection title="Результати пошуку">
+
+            <TitleSection title="Фільми">
                 <CardSlider
-                    items={moreLikeThisFilms.map((elem, index) => ({
-                        id: index, // Use index as a unique ID since `actors` doesn't have an `id`
+                    items={movies.map((elem) => ({
+                        id: elem.id,
                         title: elem.title,
-                        imageSrc: elem.imageSrc,
+                        imageUrl: Api.IMAGES_MOVIES + "/" + elem.id,
+                        onClick: () => navigate(`/movie/${elem.id}`)
                     }))}
-                    CardComponent={MediaCard}
+                    CardComponent={({ id, title, imageUrl }) => (
+                        <MediaCard
+                            id={id}
+                            title={title}
+                            imageUrl={imageUrl}
+                            path={`/movie/${id}`}
+                            style={{ height: 300, width: 200, objectFit: 'cover', cursor: 'pointer' }}
+                        />
+                    )}
                 />
             </TitleSection>
         </div>
